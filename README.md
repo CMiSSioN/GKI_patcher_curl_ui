@@ -58,5 +58,3 @@
 - AnyKernel3 релизы: [WildKernels/GKI_KernelSU_SUSFS](https://github.com/WildKernels/GKI_KernelSU_SUSFS/releases)
 
  - [KernelSu Next](https://github.com/KernelSU-Next/KernelSU-Next)
-
- - [Latest Release](https://github.com/CMiSSioN/GKI_patcher_curl_ui/releases/)
