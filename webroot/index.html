@@ -17,7 +17,6 @@
             <div class="header">
                 <h3>
                     GKI патчер ядра
-                    <span id="version-text">v3.1.7</span>
                 </h3>
             </div>
             <div class="button-box">
@@ -32,7 +31,7 @@
                 <div class="toggle-list ripple-element" id="curl_version">
                     <table><tr><td>
                     <i class="fas fa-plus toggle-icon" id="curl_version_icon"></i>
-                    <span class="toggle-text">Версия curl: </span>
+                    <span class="toggle-text">Используемый curl: </span>
                     <span class="toggle-text" style="display:inline-block" id="curl_version_short"></span></td></tr>
                     <tr><td><span class="output-info-content" style="display:none;" id="curl_version_full"></span></td></tr>
                     </table>
@@ -64,10 +63,11 @@
                     <span style='color: #FFA500;' class="output-info-content" id="version_error" ></span>
                     </td></tr>
                     <tr id="version_success" style='display:none'><td>
-                    <span style='color: #ADFF2F;' class="output-info-content" >Версию ядра удалось определить автоматически. Если очень хотите, вы можете изменить версию в выпадающем списке ниже</span>
+                    <span style='color: #089700;' class="output-info-content" >Версию ядра определена. При необходимости выберите иную в списке ниже</span>
                     </td></tr>
                     <tr id="version_fail" style='display:none'><td>
-                    <span style='color: #FFA500' class="output-info-content">Не удалось определить версию ядра автоматически. Вам необходимо выбрать версию ядра для прошивки самостоятельно. Общие рекомендации - необходимо, чтобы совпали версия ОС и версия ядра. Строка с вашей текущей версией ядра - вверху страницы. Версия устанавливаемого ядра - три числа разделенные точкой после anrdoidXX- Совпадение может быть не полным, совпадение трех цифр версии ядра имеет приоритет перед совпадением версии ОС. В любом случае, вам следует иметь план на случай, если что-то подйдет не так. Этот план должен отличаться от простого нытья на форуме, хорошей идеей будет заранее озабоится резервной копией раздела с ядром и инстументами по его восстановлению.</span>
+                    <span style='color: #FFA500' class="output-info-content">Не удалось определить версию ядра. Вам необходимо выбрать версию ядра для прошивки самостоятельно.
+                    Общие рекомендации - необходимо, чтобы совпали версия Androidв ядре (не в ОС). Строка с вашей текущей версией ядра - вверху страницы. Версия устанавливаемого ядра - три числа разделенные точкой после anrdoidXX- Совпадение может быть не полным. В любом случае, вам следует иметь план на случай, если что-то подйдет не так. Этот план должен отличаться от простого нытья на форуме, хорошей идеей будет заранее озабоится резервной копией раздела с ядром и инстументами по его восстановлению.</span>
                     </td></tr>
                     <tr id="version_abcent" style='display:none'><td>
                     <span style='color: #FFA500' class="output-info-content">Не удалось найти ни одной версии ядра, которая хотя бы теоретически могла бы у вас заработать. Ваше ядро либо слишком новое, тогда его поддержка будет добавлена в ближайшем будующем, либо слишком старое, не поддерживающие GKI2. В первом случае вам следует некоторое время подождать, во втором случае искать/собирать ядро самостоятельно</span>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="toggle-list ripple-element" id="action_button" style='display:none'>
                     <i class="fas fa-play toggle-icon"></i>
-                    <span class="toggle-text">Панеслася!</span>
+                    <span class="toggle-text">Старт</span>
                 </div>
             </div>
             <div class="output-terminal">
@@ -100,4 +100,5 @@
         </div>
     </div>
 </body>
-</html>
+</html
+  >
