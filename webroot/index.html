@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GKI патчер ядра</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" type="text/css">
+  <link rel="stylesheet" type="text/css" href="/mmrl/insets.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module" crossorigin src="main.js"></script>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="content">
+            <div class="header">
+                <h3>
+                    GKI патчер ядра
+                    <span id="version-text">v3.1.5</span>
+                </h3>
+            </div>
+            <div class="button-box">
+                <div class="toggle-list ripple-element" id="kernel_version">
+                    <table><tr><td>
+                    <i class="fas fa-plus toggle-icon" id="kernel_version_icon"></i>
+                    <span class="toggle-text">Версия ядра: </span>
+                    <span class="toggle-text" style="display:inline-block" id="kernel_version_short"></span></td></tr>
+                    <tr><td><span class="output-info-content" style="display:none;" id="kernel_version_full"></span></td></tr>
+                    </table>
+                </div>
+                <div class="toggle-list ripple-element" id="curl_version">
+                    <table><tr><td>
+                    <i class="fas fa-plus toggle-icon" id="curl_version_icon"></i>
+                    <span class="toggle-text">Версия curl: </span>
+                    <span class="toggle-text" style="display:inline-block" id="curl_version_short"></span></td></tr>
+                    <tr><td><span class="output-info-content" style="display:none;" id="curl_version_full"></span></td></tr>
+                    </table>
+                </div>
+                <div class="toggle-list ripple-element">
+                    <span class="toggle-text">Только скачивание</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-dry-run" enabled >
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="toggle-list ripple-element">
+                    <span class="toggle-text">В активный слот</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-active-slot" enabled checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="toggle-list ripple-element">
+                    <span class="toggle-text">В неактивный слот (OTA)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-inactive-slot" enabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="toggle-list ripple-element" id="kernel_select_info">
+                    <table>
+                    <tr id="version_error_container" style='display:none'><td>
+                    <span style='color: #FFA500;' class="output-info-content" id="version_error" ></span>
+                    </td></tr>
+                    <tr id="version_success" style='display:none'><td>
+                    <span style='color: #ADFF2F;' class="output-info-content" >Версию ядра удалось определить автоматически. Если очень хотите, вы можете изменить версию в выпадающем списке ниже</span>
+                    </td></tr>
+                    <tr id="version_fail" style='display:none'><td>
+                    <span style='color: #FFA500' class="output-info-content">Не удалось определить версию ядра автоматически. Вам необходимо выбрать версию ядра для прошивки самостоятельно. Общие рекомендации - необходимо, чтобы совпали версия ОС и версия ядра. Строка с вашей текущей версией ядра - вверху страницы. Версия устанавливаемого ядра - три числа разделенные точкой после anrdoidXX- Совпадение может быть не полным, совпадение трех цифр версии ядра имеет приоритет перед совпадением версии ОС. В любом случае, вам следует иметь план на случай, если что-то подйдет не так. Этот план должен отличаться от простого нытья на форуме, хорошей идеей будет заранее озабоится резервной копией раздела с ядром и инстументами по его восстановлению.</span>
+                    </td></tr>
+                    <tr id="version_abcent" style='display:none'><td>
+                    <span style='color: #FFA500' class="output-info-content">Не удалось найти ни одной версии ядра, которая хотя бы теоретически могла бы у вас заработать. Ваше ядро либо слишком новое, тогда его поддержка будет добавлена в ближайшем будующем, либо слишком старое, не поддерживающие GKI2. В первом случае вам следует некоторое время подождать, во втором случае искать/собирать ядро самостоятельно</span>
+                    </td></tr>
+                    <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text">Запрос версий</span></td></tr>
+                    </table>
+                </div>
+                <div class="toggle-list ripple-element" id="versions_container" style='display:none'>
+                  <table>
+                  <tr><td><span class="toggle-text">Установить ядро: </span></tr></td>
+                  <tr><td><select id="versions" style="width: 280px"></select></tr></td>
+                  </table>
+                </div>
+                <div class="toggle-list ripple-element" id="action_button" style='display:none'>
+                    <i class="fas fa-play toggle-icon"></i>
+                    <span class="toggle-text">Панеслася!</span>
+                </div>
+            </div>
+            <div class="output-terminal">
+                <div class="output-terminal-header">
+                    <i class="fas fa-terminal header-icon"></i>
+                    <span>Output</span>
+                    <div class="clear-terminal">
+                        <i class="fas fa-trash-alt clear-icon"></i>
+                        <span class="clear-terminal-text">Clear</span>
+                    </div>
+                </div>
+                <div class="output-terminal-content"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

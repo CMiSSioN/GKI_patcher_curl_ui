@@ -1,0 +1,365 @@
+import { fullScreen, exec, toast } from './kernelsu.js'
+
+var loading_releases = 0;
+var kernel_major = -1;
+var kernel_minor = -1;
+var kernel_suffix = -1;
+var kernel_android = -1;
+var curl_binary = "curl";
+var shellRunning = false;
+var currentFontSize = 12;
+const MIN_FONT_SIZE = 8;
+const MAX_FONT_SIZE = 24;
+let initialPinchDistance = null;
+
+/**
+ * Spawns shell process with ksu spawn
+ * @param {string} command - The command to execute
+ * @param {string[]} [args=[]] - Array of arguments to pass to the command
+ * @returns {Object} A child process object with:
+ *                   stdout: Stream for standard output
+ *                   stderr: Stream for standard error
+ *                   stdin: Stream for standard input
+ *                   on(event, listener): Attach event listener ('exit', 'error')
+ *                   emit(event, ...args): Emit events internally
+ */
+function spawn(command, args = []) {
+    const child = {
+        listeners: {},
+        stdout: { listeners: {} },
+        stderr: { listeners: {} },
+        stdin: { listeners: {} },
+        on: function(event, listener) {
+            if (!this.listeners[event]) this.listeners[event] = [];
+            this.listeners[event].push(listener);
+        },
+        emit: function(event, ...args) {
+            if (this.listeners[event]) {
+                this.listeners[event].forEach(listener => listener(...args));
+            }
+        }
+    };
+    ['stdout', 'stderr', 'stdin'].forEach(io => {
+        child[io].on = child.on.bind(child[io]);
+        child[io].emit = child.emit.bind(child[io]);
+    });
+    const callbackName = `spawn_callback_${Date.now()}`;
+    window[callbackName] = child;
+    child.on("exit", () => delete window[callbackName]);
+    try {
+        ksu.spawn(command, JSON.stringify(args), "{}", callbackName);
+    } catch (error) {
+        child.emit("error", error);
+        delete window[callbackName];
+    }
+    return child;
+}
+
+function loadingReleasesTick(){
+	if(loading_releases == 1){
+		document.getElementById("versions").innerHTML += ".";
+		if(document.getElementById("versions").innerHTML.length > 50){
+			document.getElementById("versions").innerHTML = "получение доступных версий ядер .";
+		}
+		setTimeout(loadingReleasesTick, 500);
+	}
+}
+
+function getKernels(){
+	try {
+		var versions = document.getElementById("versions");
+		//versions.innerHTML = "получение доступных версий ядер .";
+		//loading_releases = 1;
+		//setTimeout(loadingReleasesTick, 500);
+		fetch("https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases").then(response => {
+			// Check if the request was successful (status code 200-299)
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+    // Parse the response body as JSON
+			return response.json();
+		})
+		.then(data => {
+			var release_index = 0;
+			// data.every(function(release, index) {
+			// 	if(release.body.includes("https://github.com/KernelSU-Next/KernelSU-Next/commit")){ release_index = index; return false; }
+			// 	return true;
+			// });
+			const regex = /^.*-android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
+			loading_releases = 0;
+			//const versionsSel = document.createElement("select");
+			const versionsSel = document.getElementById("versions")
+			const versionsCont = document.getElementById("versions_container")
+			//versionsSel.id = 'kernel_select';
+			//versionsSel.name = 'kernel_select';
+			var version_selected = "";
+			const option = new Option("не выбрано", "");
+			versionsSel.add(option);
+			var has_any_version = false;
+			data.forEach(function(release){
+				release.assets.forEach(function(asset) {
+					const ver = regex.exec(asset.name);
+					if(ver !== null){
+						const android = ver[1];
+						const major = ver[2];
+						const minor = ver[3];
+						const suffix = ver[4];
+						if(major != kernel_major){ return; }
+						if(minor != kernel_minor){ return; }
+						if(suffix != kernel_suffix){ return; }
+						const option = new Option(asset.name, asset.browser_download_url);
+						versionsSel.add(option);
+						has_any_version = true;
+						if(version_selected.length < 10){
+							if((android == kernel_android) && (major == kernel_major) && (minor == kernel_minor) && (suffix == kernel_suffix)){
+								version_selected = asset.browser_download_url;
+								option.selected = true;
+							}
+						}
+					}
+				});
+			});
+			if(has_any_version === false){
+				data.forEach(function(release){
+					release.assets.forEach(function(asset) {
+						const ver = regex.exec(asset.name);
+						if(ver !== null){
+							const android = ver[1];
+							const major = ver[2];
+							const minor = ver[3];
+							const suffix = ver[4];
+							if(major != kernel_major){ return; }
+							if(minor != kernel_minor){ return; }
+							const option = new Option(asset.name, asset.browser_download_url);
+							versionsSel.add(option);
+							has_any_version = true;
+						}
+					});
+				});
+			}
+			document.getElementById("kernel_select_icon").style.display = 'none';
+			if(version_selected.length > 0){
+				versionsSel.value = version_selected;
+				document.getElementById("version_success").style.display = '';
+				document.getElementById("version_fail").style.display = 'none';
+				document.getElementById("version_abcent").style.display = 'none';
+			} else {
+				if(has_any_version === true){
+					document.getElementById("version_success").style.display = 'none';
+					document.getElementById("version_fail").style.display = '';
+					document.getElementById("version_abcent").style.display = 'none';
+				} else {
+					document.getElementById("version_success").style.display = 'none';
+					document.getElementById("version_fail").style.display = 'none';
+					document.getElementById("version_abcent").style.display = '';
+				}
+			}
+			if(has_any_version === true){
+				document.getElementById("action_button").style.display = '';
+				versionsCont.style.display = '';
+			} else {
+				versionsCont.style.display = 'none';
+			}
+			window.scrollTo(0, document.body.scrollHeight);
+		})
+		.catch(error => {
+			document.getElementById("kernel_select_icon").style.display = 'none';
+			document.getElementById("version_error_container").style.display = '';
+			document.getElementById("version_error").innerHTML = "Ошибка получения или разбора JSON:"+error;
+		});
+	} catch (error){
+		document.getElementById("kernel_select_icon").style.display = 'none';
+		document.getElementById("version_error_container").style.display = '';
+		document.getElementById("version_error").innerHTML = "Ошибка получения или разбора JSON:"+error;
+	}
+}
+
+function updateFontSize(newSize) {
+	currentFontSize = Math.min(Math.max(newSize, MIN_FONT_SIZE), MAX_FONT_SIZE);
+	const terminal = document.querySelector('.output-terminal-content');
+	terminal.style.fontSize = `${currentFontSize}px`;
+}
+
+
+function appendToOutput(content) {
+	const output = document.querySelector('.output-terminal-content');
+	if (content.trim() === "") {
+			const lineBreak = document.createElement('br');
+			output.appendChild(lineBreak);
+	} else {
+			const line = document.createElement('p');
+			line.className = 'output-content';
+			line.innerHTML = content.replace(/ /g, ' ');
+			output.appendChild(line);
+	}
+	output.scrollTop = output.scrollHeight;
+	window.scrollTo(0, document.body.scrollHeight);
+}
+
+function runAction() {
+	if (shellRunning) return;
+	const kernel_url = document.getElementById('versions');
+	const output = document.querySelector('.output-terminal-content');
+	currentFontSize = 10;
+	updateFontSize(currentFontSize);
+	if(kernel_url.value.length < 10){
+		output.innerHTML = "<span style='color:#FFA500'>Необходимо выбрать ядро для установки</spawn>";
+		return;
+	}
+	output.innerHTML = "";
+	shellRunning = true;
+	appendToOutput(kernel_url.value);
+	appendToOutput(curl_binary);
+	const scriptOutput = spawn("sh", [
+		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url.value
+		, document.getElementById('toggle-dry-run').checked ? "1" : "0"
+		, document.getElementById('toggle-active-slot').checked ? "1" : "0"
+		, document.getElementById('toggle-inactive-slot').checked ? "1" : "0"
+	]);
+	scriptOutput.stdout.on('data', (data) => appendToOutput(data));
+	scriptOutput.stderr.on('data', (data) => appendToOutput(data));
+	scriptOutput.on('exit', () => {
+			appendToOutput("Завершено");
+			if((!document.getElementById('toggle-dry-run').checked) && ((document.getElementById('toggle-active-slot').checked) || (document.getElementById('toggle-inactive-slot').checked)) ){
+				appendToOutput("Перезагрузитесь для применения эффекта");
+			}
+			shellRunning = false;
+	});
+	scriptOutput.on('error', () => {
+			appendToOutput("[!] Error: Fail to execute do_action.sh");
+			appendToOutput("");
+			shellRunning = false;
+	});
+}
+
+function addEventListeners(){
+	const kernel_version = document.getElementById('kernel_version');
+	kernel_version.addEventListener('click', () => {
+		const kernel_version_full = document.getElementById('kernel_version_full');
+		const kernel_version_short = document.getElementById('kernel_version_short');
+		const kernel_version_icon = document.getElementById('kernel_version_icon');
+		if(kernel_version_full.style.display == "none"){
+			kernel_version_icon.classList.remove("fa-plus");
+			kernel_version_icon.classList.add("fa-minus");
+			kernel_version_short.style.display = "none";
+			kernel_version_full.style.display = "block";
+		} else {
+			kernel_version_icon.classList.remove("fa-minus");
+			kernel_version_icon.classList.add("fa-plus");
+			kernel_version_short.style.display = "inline-block";
+			kernel_version_full.style.display = "none";
+		}
+	});
+	const curl_version = document.getElementById('curl_version');
+	curl_version.addEventListener('click', () => {
+		const curl_version_full = document.getElementById('curl_version_full');
+		const curl_version_short = document.getElementById('curl_version_short');
+		const curl_version_icon = document.getElementById('curl_version_icon');
+		if(curl_version_full.style.display == "none"){
+			curl_version_icon.classList.remove("fa-plus");
+			curl_version_icon.classList.add("fa-minus");
+			curl_version_short.style.display = "none";
+			curl_version_full.style.display = "block";
+		} else {
+			curl_version_icon.classList.remove("fa-minus");
+			curl_version_icon.classList.add("fa-plus");
+			curl_version_short.style.display = "inline-block";
+			curl_version_full.style.display = "none";
+		}
+	});
+	const clearButton = document.querySelector('.clear-terminal');
+	const terminal = document.querySelector('.output-terminal-content');
+	clearButton.addEventListener('click', () => {
+			terminal.innerHTML = '';
+			currentFontSize = 10;
+			updateFontSize(currentFontSize);
+	});
+
+	// terminal.addEventListener('touchstart', (e) => {
+	// 		if (e.touches.length === 2) {
+	// 				e.preventDefault();
+	// 				initialPinchDistance = getDistance(e.touches[0], e.touches[1]);
+	// 		}
+	// }, { passive: false });
+	// terminal.addEventListener('touchmove', (e) => {
+	// 		if (e.touches.length === 2) {
+	// 				e.preventDefault();
+	// 				const currentDistance = getDistance(e.touches[0], e.touches[1]);
+ //
+	// 				if (initialPinchDistance === null) {
+	// 						initialPinchDistance = currentDistance;
+	// 						return;
+	// 				}
+ //
+	// 				const scale = currentDistance / initialPinchDistance;
+	// 				const newFontSize = currentFontSize * scale;
+	// 				updateFontSize(newFontSize);
+	// 				initialPinchDistance = currentDistance;
+	// 		}
+	// }, { passive: false });
+	// terminal.addEventListener('touchend', () => {
+	// 		initialPinchDistance = null;
+	// });
+	const action_button = document.getElementById('action_button');
+	action_button.addEventListener('click', () => {
+		try{
+			appendToOutput(shellRunning.toString());
+			runAction();
+		} catch (error){
+			appendToOutput(error);
+		}
+	});
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+	const kernel_version_regex = /^Linux version ([0-9]+).([0-9]+).([0-9]+).*$/
+	const kernel_android_regex = /^.*-android([0-9]+)-.*$/
+	const ver_result = await exec("cat /proc/version");
+	if(ver_result.errno == 0) {
+		document.getElementById("kernel_version_full").innerHTML = ver_result.stdout;
+		const kernel_ver = kernel_version_regex.exec(ver_result.stdout);
+		const kernel_and = kernel_android_regex.exec(ver_result.stdout);
+		if(kernel_ver !== null){
+			kernel_major = kernel_ver[1];
+			//kernel_major = 4;
+			kernel_minor = kernel_ver[2];
+			kernel_suffix = kernel_ver[3];
+		}
+		if(kernel_and != null){
+			kernel_android = kernel_and[1];
+			//kernel_android = 19;
+		}
+		if((kernel_major != -1) && (kernel_android != -1)){
+			document.getElementById("kernel_version_short").innerHTML = kernel_major+"."+kernel_minor+"."+kernel_suffix+"-android"+kernel_android;
+		} else {
+			if(kernel_major != -1) {
+				document.getElementById("kernel_version_short").innerHTML = kernel_major+"."+kernel_minor+"."+kernel_suffix;
+			} else {
+				document.getElementById("kernel_version_short").innerHTML = "ошибка";
+				document.getElementById("kernel_version_short").style.color = '#FFA500';
+			}
+		}
+	} else {
+		document.getElementById("kernel_version_short").innerHTML = "провал " + ver_result.errno;
+		document.getElementById("kernel_version_short").style.color = '#FFA500';
+	}
+	addEventListeners();
+	const curl_int_result = await exec("curl --version");
+	if(curl_int_result.errno == 0) {
+		document.getElementById("curl_version_short").innerHTML = "системная";
+		document.getElementById("curl_version_full").innerHTML = curl_int_result.stdout;
+		curl_binary = "curl"
+	} else {
+		const curl_ext_result = await exec("/data/adb/modules/gki_patcher_curl_ui/system/bin/curl --version");
+		if(curl_ext_result.errno == 0) {
+			document.getElementById("curl_version_short").innerHTML = "встроенная";
+			document.getElementById("curl_version_full").innerHTML = curl_ext_result.stdout;
+			curl_binary = "/data/adb/modules/gki_patcher_curl_ui/system/bin/curl"
+		} else {
+			document.getElementById("curl_version_short").innerHTML = "отсутствует";
+			document.getElementById("curl_version_short").setAttribute('style', 'color: #FFA500;');
+			return;
+		}
+	}
+	getKernels();
+});
