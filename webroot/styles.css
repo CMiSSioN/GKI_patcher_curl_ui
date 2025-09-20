@@ -29,6 +29,14 @@
     --btn-primary: var(--primary, #007bff);
     --btn-primary-text: var(--onPrimary, #fff);
 
+    /* Rainbow border colors (for animation) */
+    --color-one: #ff0000;
+    --color-two: #ff7f00;
+    --color-three: #ffff00;
+    --color-four: #00ff00;
+    --color-five: #0000ff;
+    --color-six: #4b0082;
+    --color-seven: #9400d3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +52,8 @@
         --text-muted: #C2C2C2;
         --text-output: #e0e0e0; /* New for output text in dark mode */
 
+        /* Border colors */
+        --border-color: var(--outlineVariant, #636363);
     }
 }
 
@@ -55,21 +65,29 @@ body {
     padding-bottom: var(--bottom-inset);
     margin: 0;
     display: flex;
+    flex-direction: column; /* <-- чтобы контент тянулся вертикально */
     justify-content: center;
-    align-items: center;
+    align-items: center; /* <-- контейнер на всю ширину */
     min-height: 100vh;
     box-sizing: border-box;
     overflow-y: auto; /* Allow scrolling for smaller screens */
+    
 }
 
 .main-container {
+    width: 100%;       /* растянуть по ширине */
+    height: 100%;      /* растянуть по высоте окна */
+    max-width: 100%;   /* убираем ограничение */
+    display: flex;
+    flex-direction: column;
     padding: 5px; /* Alterado de 20px para 5px para diminuir a grossura da borda */
-    border-radius: 20px;
-    background: linear-gradient(to right, var(--color-one), var(--color-two), var(--color-three), var(--color-four), var(--color-five), var(--color-six), var(--color-seven));
+    border-radius: 0px;
+    /*background: linear-gradient(to right, var(--color-one), var(--color-two), var(--color-three), var(--color-four), var(--color-five), var(--color-six), var(--color-seven));*/
     background-size: 400% 400%;
     animation: rainbow-border 15s ease infinite;
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
 }
 
 .content {
@@ -80,7 +98,7 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 800px;
+    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -184,10 +202,11 @@ body {
 
 .toggle-switch {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
     margin-left: auto;
     width: 45px; /* Slightly larger switch */
     height: 28px;
+    flex-shrink: 0;
 }
 
 .toggle-switch input {
@@ -351,6 +370,13 @@ input:checked+.slider:before {
         transform: scale(3);
         opacity: 0; /* Fade out ripple */
     }
+}
+
+/* Rainbow Border Animation */
+@keyframes rainbow-border {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Responsiveness */
