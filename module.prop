@@ -1,7 +1,7 @@
 id=gki_patcher_curl_ui
 name=KernelSU Next GKI Patcher
-version=3.1.7
-versionCode=34
+version=3.2
+versionCode=35
 author=AJ1EKCAHgP, Original Author gl_hf
 description=Автоматический патчинг GKI для смартфонов (Slot A/B)
 banner=logo.png
