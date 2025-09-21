@@ -53,8 +53,10 @@
 
 ---
 
-## 🛠 Источник
+## 🙏 Благодарности
 
-- AnyKernel3 релизы: [WildKernels/GKI_KernelSU_SUSFS](https://github.com/WildKernels/GKI_KernelSU_SUSFS/releases)
+- 💡 Оригинальная идея модуля принадлежит [gl_hf](https://4pda.to/forum/index.php?showuser=2137182) с 4PDA  
 
- - [KernelSu Next](https://github.com/KernelSU-Next/KernelSU-Next)
+- 📦 AnyKernel3 сборки: [WildKernels/GKI_KernelSU_SUSFS](https://github.com/WildKernels/GKI_KernelSU_SUSFS/releases)
+
+ - 💎 [KernelSu Next](https://github.com/KernelSU-Next/KernelSU-Next)
