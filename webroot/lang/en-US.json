@@ -1,0 +1,18 @@
+{
+	"str_main_version" : "GKI boot patcher",
+	"str_kernel_version" : "Kernel version: ",
+	"str_curl_version" : "curl version: ",
+	"str_curl_version_system" : "system",
+	"str_curl_version_internal" : "internal",
+	"str_curl_version_none" : "none",
+	"str_dry_run" : "dry run",
+	"str_into_active_slot" : "to active slot",
+	"str_into_inactive_slot" : "to inactive slot (OTA)",
+	"str_version_unchoosen" : "none",
+	"str_version_success" : "Kernel version to install been detected automatically. Never the less you can change version about to install at combobox bellow",
+	"str_version_fail" : "Kernel version can't be detected automatically. You shoud choose kernel version manually. Common statements - &lt;major&gt.&lt;minor&gt.&lt;build&gt-android&lt;android version&gt of your current kernel should be equal version you are about to install. Keep in mind - your Android version by SDK might not be equal your android version reported by kernel. If you have equality by &lt;major&gt.&lt;minor&gt.&lt;build&gt and there are no other options having same &lt;major&gt.&lt;minor&gt.&lt;build&gt but different -android&lt;android version&gt - it should be mostly safe to install. Never the less - it is a good idea to have backup plan in case of bootloop, boot image backup and flashing tools",
+	"str_version_abcent" : "There are no kernel versions having any chance to function properly on your device. There are two options. First your current kernel is very new - its support might been added in nearest future, just wait patiantly. Second your kervel is too old and does not supports GKI2, in that case you should search for kernel with buildin KernelSU or build it by yourself. Any way best wishes in your upcoming quest",
+	"str_request_versions" : "Requesting versions",
+	"str_install_kernel" : "Install kernel: ",
+	"str_start" : "Start"
+}

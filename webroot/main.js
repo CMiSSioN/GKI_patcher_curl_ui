@@ -12,6 +12,61 @@ const MIN_FONT_SIZE = 8;
 const MAX_FONT_SIZE = 24;
 let initialPinchDistance = null;
 
+function appendToOutput(content) {
+	const output = document.querySelector('.output-terminal-content');
+	if (content.trim() === "") {
+			const lineBreak = document.createElement('br');
+			output.appendChild(lineBreak);
+	} else {
+			const line = document.createElement('p');
+			line.className = 'output-content';
+			line.innerHTML = content.replace(/ /g, ' ');
+			output.appendChild(line);
+	}
+	output.scrollTop = output.scrollHeight;
+	window.scrollTo(0, document.body.scrollHeight);
+}
+
+
+async function getTranslation(locale) {
+	try {
+		//appendToOutput(`cat /data/adb/modules/gki_patcher_curl_ui/webroot/lang/${locale}.json`);
+		const translate_result = await exec(`cat /data/adb/modules/gki_patcher_curl_ui/webroot/lang/${locale}.json`);
+		if(translate_result.errno == 0){
+			return translate_result.stdout;
+		}
+		return "";
+	} catch (error){
+		appendToOutput(error);
+	}
+	return "";
+}
+
+async function doTranslate(){
+	let curLocale = "en-US";
+	const locale_regex = /^([a-zA-Z]+)-([a-zA-Z]+).*$/;
+	const locale_result = await exec("getprop persist.sys.locale");
+	if(locale_result.errno == 0) {
+	 	const locale_res = locale_regex.exec(locale_result.stdout);
+	 	if (locale_res !== null){
+			curLocale = locale_res[1]+"-"+locale_res[2];
+		}
+	}
+	//curLocale = "er-ER";
+	let localeData = await getTranslation(curLocale);
+	//appendToOutput("localeData length:"+localeData.length);
+	if(localeData.length == 0){
+		localeData = await getTranslation("en-US");
+	}
+	//appendToOutput(localeData);
+	const localeJSON = JSON.parse(localeData);
+	let locElements = document.querySelectorAll('.localize');
+	locElements.forEach(function(element){
+		element.innerHTML = localeJSON[element.id];
+	});
+}
+
+
 /**
  * Spawns shell process with ksu spawn
  * @param {string} command - The command to execute
@@ -55,15 +110,6 @@ function spawn(command, args = []) {
     return child;
 }
 
-function loadingReleasesTick(){
-	if(loading_releases == 1){
-		document.getElementById("versions").innerHTML += ".";
-		if(document.getElementById("versions").innerHTML.length > 50){
-			document.getElementById("versions").innerHTML = "получение доступных версий ядер .";
-		}
-		setTimeout(loadingReleasesTick, 500);
-	}
-}
 
 function getKernels(){
 	try {
@@ -93,8 +139,8 @@ function getKernels(){
 			//versionsSel.id = 'kernel_select';
 			//versionsSel.name = 'kernel_select';
 			var version_selected = "";
-			const option = new Option("не выбрано", "");
-			versionsSel.add(option);
+			//const option = new Option("un", "");
+			//versionsSel.add(option);
 			var has_any_version = false;
 			data.forEach(function(release){
 				release.assets.forEach(function(asset) {
@@ -180,21 +226,6 @@ function updateFontSize(newSize) {
 	terminal.style.fontSize = `${currentFontSize}px`;
 }
 
-
-function appendToOutput(content) {
-	const output = document.querySelector('.output-terminal-content');
-	if (content.trim() === "") {
-			const lineBreak = document.createElement('br');
-			output.appendChild(lineBreak);
-	} else {
-			const line = document.createElement('p');
-			line.className = 'output-content';
-			line.innerHTML = content.replace(/ /g, ' ');
-			output.appendChild(line);
-	}
-	output.scrollTop = output.scrollHeight;
-	window.scrollTo(0, document.body.scrollHeight);
-}
 
 function runAction() {
 	if (shellRunning) return;
@@ -312,6 +343,7 @@ function addEventListeners(){
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+	await doTranslate();
 	const kernel_version_regex = /^Linux version ([0-9]+).([0-9]+).([0-9]+).*$/
 	const kernel_android_regex = /^.*-android([0-9]+)-.*$/
 	const ver_result = await exec("cat /proc/version");
@@ -335,28 +367,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if(kernel_major != -1) {
 				document.getElementById("kernel_version_short").innerHTML = kernel_major+"."+kernel_minor+"."+kernel_suffix;
 			} else {
-				document.getElementById("kernel_version_short").innerHTML = "ошибка";
+				document.getElementById("kernel_version_short").innerHTML = "error";
 				document.getElementById("kernel_version_short").style.color = '#FFA500';
 			}
 		}
 	} else {
-		document.getElementById("kernel_version_short").innerHTML = "провал " + ver_result.errno;
+		document.getElementById("kernel_version_short").innerHTML = "error " + ver_result.errno;
 		document.getElementById("kernel_version_short").style.color = '#FFA500';
 	}
 	addEventListeners();
 	const curl_int_result = await exec("curl --version");
 	if(curl_int_result.errno == 0) {
-		document.getElementById("curl_version_short").innerHTML = "системная";
+		document.getElementById("str_curl_version_system").style.display = "";
 		document.getElementById("curl_version_full").innerHTML = curl_int_result.stdout;
 		curl_binary = "curl"
 	} else {
 		const curl_ext_result = await exec("/data/adb/modules/gki_patcher_curl_ui/system/bin/curl --version");
 		if(curl_ext_result.errno == 0) {
-			document.getElementById("curl_version_short").innerHTML = "встроенная";
+			//document.getElementById("curl_version_short").innerHTML = "встроенная";
+			document.getElementById("str_curl_version_internal").style.display = "";
 			document.getElementById("curl_version_full").innerHTML = curl_ext_result.stdout;
 			curl_binary = "/data/adb/modules/gki_patcher_curl_ui/system/bin/curl"
 		} else {
 			document.getElementById("curl_version_short").innerHTML = "отсутствует";
+			document.getElementById("str_curl_version_internal").style.display = "";
 			document.getElementById("curl_version_short").setAttribute('style', 'color: #FFA500;');
 			return;
 		}

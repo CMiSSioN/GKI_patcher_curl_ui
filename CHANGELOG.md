@@ -1,4 +1,6 @@
+## v3.2
+- added EN localization
 ## v3.1.7
-- Добавлена инфраструктура для автоматического обновления
+- autoupdate infructructure
 ## v3.1.5 
 - Initial release

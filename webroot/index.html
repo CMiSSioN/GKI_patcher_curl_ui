@@ -16,14 +16,14 @@
         <div class="content">
             <div class="header">
                 <h3>
-                    GKI патчер ядра
+                    <span class="localize" id="str_main_version">unlocalized</span>
                 </h3>
             </div>
             <div class="button-box">
                 <div class="toggle-list ripple-element" id="kernel_version">
                     <table><tr><td>
                     <i class="fas fa-plus toggle-icon" id="kernel_version_icon"></i>
-                    <span class="toggle-text">Версия ядра: </span>
+                    <span class="toggle-text"><span class="localize" id="str_kernel_version">unlocalized</span></span>
                     <span class="toggle-text" style="display:inline-block" id="kernel_version_short"></span></td></tr>
                     <tr><td><span class="output-info-content" style="display:none;" id="kernel_version_full"></span></td></tr>
                     </table>
@@ -31,27 +31,32 @@
                 <div class="toggle-list ripple-element" id="curl_version">
                     <table><tr><td>
                     <i class="fas fa-plus toggle-icon" id="curl_version_icon"></i>
-                    <span class="toggle-text">Используемый curl: </span>
+                    <span class="toggle-text">
+                        <span class="localize" id="str_curl_version">unlocalized</span>
+                        <span class="localize" id="str_curl_version_system" style='display:none'>unlocalized</span>
+                        <span class="localize" id="str_curl_version_internal" style='display:none'>unlocalized</span>
+                        <span class="localize" id="str_curl_version_none" style='display:none'>unlocalized</span>
+                    </span>
                     <span class="toggle-text" style="display:inline-block" id="curl_version_short"></span></td></tr>
                     <tr><td><span class="output-info-content" style="display:none;" id="curl_version_full"></span></td></tr>
                     </table>
                 </div>
                 <div class="toggle-list ripple-element">
-                    <span class="toggle-text">Только скачивание</span>
+                    <span class="toggle-text"><span class="localize" id="str_dry_run">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-dry-run" enabled >
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="toggle-list ripple-element">
-                    <span class="toggle-text">В активный слот</span>
+                    <span class="toggle-text"><span class="localize" id="str_into_active_slot">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-active-slot" enabled checked>
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="toggle-list ripple-element">
-                    <span class="toggle-text">В неактивный слот (OTA)</span>
+                    <span class="toggle-text"><span class="localize" id="str_into_inactive_slot">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-inactive-slot" enabled>
                         <span class="slider round"></span>
@@ -59,31 +64,23 @@
                 </div>
                 <div class="toggle-list ripple-element" id="kernel_select_info">
                     <table>
-                    <tr id="version_error_container" style='display:none'><td>
-                    <span style='color: #FFA500;' class="output-info-content" id="version_error" ></span>
+                    <tr id="version_error_container" style='display:none'><td><span style='color: #FFA500;' class="output-info-content" id="version_error" ></span></td></tr>
+                    <tr id="version_success" style='display:none'><td><span style='color: #089700;' class="output-info-content" ><span class="localize" id="str_version_success">unlocalized</span></span></td></tr>
+                    <tr id="version_fail" style='display:none'><td><span style='color: #FFA500' class="output-info-content"><span class="localize" id="str_version_fail">unlocalized</span></span></td></tr>
+                    <tr id="version_abcent" style='display:none'><td><span style='color: #FFA500' class="output-info-content"><span class="localize" id="str_version_abcent">unlocalized</span></span>
                     </td></tr>
-                    <tr id="version_success" style='display:none'><td>
-                    <span style='color: #089700;' class="output-info-content" >Версию ядра определена. При необходимости выберите иную в списке ниже</span>
-                    </td></tr>
-                    <tr id="version_fail" style='display:none'><td>
-                    <span style='color: #FFA500' class="output-info-content">Не удалось определить версию ядра. Вам необходимо выбрать версию ядра для прошивки самостоятельно.
-                    Общие рекомендации - необходимо, чтобы совпали версия Androidв ядре (не в ОС). Строка с вашей текущей версией ядра - вверху страницы. Версия устанавливаемого ядра - три числа разделенные точкой после anrdoidXX- Совпадение может быть не полным. В любом случае, вам следует иметь план на случай, если что-то подйдет не так. Этот план должен отличаться от простого нытья на форуме, хорошей идеей будет заранее озабоится резервной копией раздела с ядром и инстументами по его восстановлению.</span>
-                    </td></tr>
-                    <tr id="version_abcent" style='display:none'><td>
-                    <span style='color: #FFA500' class="output-info-content">Не удалось найти ни одной версии ядра, которая хотя бы теоретически могла бы у вас заработать. Ваше ядро либо слишком новое, тогда его поддержка будет добавлена в ближайшем будующем, либо слишком старое, не поддерживающие GKI2. В первом случае вам следует некоторое время подождать, во втором случае искать/собирать ядро самостоятельно</span>
-                    </td></tr>
-                    <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text">Запрос версий</span></td></tr>
+                    <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text"><span class="localize" id="str_request_versions">Запрос версий</span></span></td></tr>
                     </table>
                 </div>
                 <div class="toggle-list ripple-element" id="versions_container" style='display:none'>
                   <table>
-                  <tr><td><span class="toggle-text">Установить ядро: </span></tr></td>
-                  <tr><td><select id="versions" style="width: 280px"></select></tr></td>
+                  <tr><td><span class="toggle-text"><span class="localize" id="str_install_kernel">Установить ядро: </span></span></tr></td>
+                  <tr><td><select id="versions" style="width: 280px"><option value=""><span class="localize" id="str_version_unchoosen">unlocalized</span></option></select></tr></td>
                   </table>
                 </div>
                 <div class="toggle-list ripple-element" id="action_button" style='display:none'>
                     <i class="fas fa-play toggle-icon"></i>
-                    <span class="toggle-text">Старт</span>
+                    <span class="toggle-text"><span class="localize" id="str_start">Старт</span></span>
                 </div>
             </div>
             <div class="output-terminal">
@@ -100,5 +97,4 @@
         </div>
     </div>
 </body>
-</html
-  >
+</html>
