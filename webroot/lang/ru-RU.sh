@@ -1,0 +1,42 @@
+STR_BRAND="Брэнд"
+STR_WELLCOME_MESSAGE="Старт скрипта патчинга KernelSU Next"
+STR_RAW_KERNEL_VERSION="Необработанная версия ядра: "
+STR_IS_ONEPLUS="Ваше устройство определено как OnePlus/Realme"
+STR_IS_NOT_ONEPLUS="Ваше устройство определено как НЕ OnePlus/Realme"
+STR_IS_ONEPLUS_KERNEL="Будет прошито ядро для устройств OnePlus/Realme
+[!] ВНИМАНИЕ прошивка неподходящего ядра может привести к невозможности загрузки"
+STR_IS_NOT_ONEPLUS_KERNEL="Будет прошито ядро для устройств НЕ OnePlus/Realme
+[!] ВНИМАНИЕ прошивка неподходящего ядра может привести к невозможности загрузки"
+STR_USER_INPUT_MESSAGE="VOL+ подтвердить
+VOL- опровергнуть"
+STR_USER_APROVE_MESSAGE="VOL+ продолжить
+VOL- выход"
+STR_CURRENT_KERNEL_VERSION="Текущая версия ядра"
+STR_TEMP_DIR_PREPARE="Подготовка временной директории"
+STR_SWITCH_TO_INTERNAL_CURL="Системный curl отсутствует. Переключаюсь на встроенный"
+STR_GITHUB_API_CHECK="Проверка доступа к Github.api"
+STR_GITHUB_API_FAIL="
+  | Github.api недоступен
+  | Отключите блокировщик рекламы
+  | Попробуйте включить VPN
+"
+STR_KERNEL_VERSIONS_REPO_MESSAGE="Получение списка релизов из репозитория"
+STR_SEARCHING_KERNEL_PREFIX="Поиск ядра"
+STR_SEARCHING_KERNEL_SUFFIX="в релизах..."
+STR_SEARCHING_KERNEL_FAIL="Не найдено подходящее ядро для версии"
+STR_SEARCHING_KERNEL_SUCCESS="Найден архив для ядра"
+STR_BEGIN_DOWNLOAD="Начинаю скачивание..."
+STR_DOWNLOAD_FAIL="Ошибка скачивания"
+STR_DOWNLOAD_SUCCESS="Архив скачан в"
+STR_UNPACKING="Извлечение busybox и update-binary из архива..."
+STR_MOUNTING="Создаю tmpfs и монтирую..."
+STR_EXECUTING="Запускаю update-binary для установки ядра..."
+STR_ACTIVE_SUCCESS="Ядро успешно установлено в активный слот"
+STR_ACTIVE_FAIL="Не удалось установить в активный слот"
+STR_INACTIVE_SUCCESS="Ядро установлено поверх ОТА"
+STR_INACTIVE_FAIL="Используется только после ОТА"
+STR_UNMOUNTING="Завершаю работу и очищаю временные файлы..."
+STR_DRY_RUN_SUCCESS="Архив с ядром успешно скачан и распакован"
+STR_ACTIVE_SLOT_INSTALL="Установка в активный слот"
+STR_INACTIVE_SLOT_INSTALL="Установка в неактивный слот"
+STR_WAIT="Это может занять некоторое время..."

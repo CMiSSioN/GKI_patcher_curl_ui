@@ -11,6 +11,8 @@ var currentFontSize = 12;
 const MIN_FONT_SIZE = 8;
 const MAX_FONT_SIZE = 24;
 let initialPinchDistance = null;
+let releases_url = "";
+let is_oneplus = false;
 
 function appendToOutput(content) {
 	const output = document.querySelector('.output-terminal-content');
@@ -110,14 +112,45 @@ function spawn(command, args = []) {
     return child;
 }
 
+//"https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases"
+
+async function onePlusDetect(){
+	const brand_result = await exec("getprop ro.product.product.brand");
+	if(brand_result.errno == 0){
+		let brand = brand_result.stdout.toUpperCase();
+		//brand = "OPLUS";
+		if( (brand == "ONEPLUS") || (brand == "OPLUS") || (brand == "REALME") ) {
+			releases_url = "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases";
+			document.getElementById("toggle-is-oneplus").checked = true;
+			is_oneplus = true;
+			return;
+		}
+	}
+	document.getElementById("toggle-is-oneplus").checked = false;
+	releases_url = "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases";
+	is_oneplus = false;
+}
 
 function getKernels(){
 	try {
-		var versions = document.getElementById("versions");
+		while(true){
+			if(releases_url.length != 0){ break; }
+		}
+		const versionsSel = document.getElementById("versions");
+		const versionsCont = document.getElementById("versions_container");
+		versionsCont.style.display = "none";
+		document.getElementById("version_success").style.display = 'none';
+		document.getElementById("version_fail").style.display = 'none';
+		document.getElementById("version_abcent").style.display = 'none';
+		document.getElementById("kernel_select_icon").style.display = '';
+		document.getElementById("toggle-is-oneplus").disabled = true;
+		while (versionsSel.options.length > 1) {
+			versionsSel.remove(1); // Repeatedly remove the first option
+		}
 		//versions.innerHTML = "получение доступных версий ядер .";
 		//loading_releases = 1;
 		//setTimeout(loadingReleasesTick, 500);
-		fetch("https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases").then(response => {
+		fetch(releases_url).then(response => {
 			// Check if the request was successful (status code 200-299)
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -131,11 +164,12 @@ function getKernels(){
 			// 	if(release.body.includes("https://github.com/KernelSU-Next/KernelSU-Next/commit")){ release_index = index; return false; }
 			// 	return true;
 			// });
-			const regex = /^.*-android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
+			let regex = /^.*-android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
+			if(is_oneplus){
+				regex = /^AnyKernel3.*_android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)_.*.zip$/;
+			}
 			loading_releases = 0;
 			//const versionsSel = document.createElement("select");
-			const versionsSel = document.getElementById("versions")
-			const versionsCont = document.getElementById("versions_container")
 			//versionsSel.id = 'kernel_select';
 			//versionsSel.name = 'kernel_select';
 			var version_selected = "";
@@ -184,6 +218,7 @@ function getKernels(){
 				});
 			}
 			document.getElementById("kernel_select_icon").style.display = 'none';
+			document.getElementById("toggle-is-oneplus").disabled = false;
 			if(version_selected.length > 0){
 				versionsSel.value = version_selected;
 				document.getElementById("version_success").style.display = '';
@@ -305,7 +340,19 @@ function addEventListeners(){
 			currentFontSize = 10;
 			updateFontSize(currentFontSize);
 	});
-
+	const is_oneplus_box = document.getElementById("toggle-is-oneplus");
+	is_oneplus_box.addEventListener('change', (event) => {
+		if (!event.currentTarget.disabled) {
+			if(event.currentTarget.checked){
+				releases_url = "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases";
+				is_oneplus = true;
+			}else{
+				releases_url = "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases";
+				is_oneplus = false;
+			}
+			getKernels();
+		}
+	})
 	// terminal.addEventListener('touchstart', (e) => {
 	// 		if (e.touches.length === 2) {
 	// 				e.preventDefault();
@@ -334,7 +381,6 @@ function addEventListeners(){
 	const action_button = document.getElementById('action_button');
 	action_button.addEventListener('click', () => {
 		try{
-			appendToOutput(shellRunning.toString());
 			runAction();
 		} catch (error){
 			appendToOutput(error);
@@ -375,6 +421,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		document.getElementById("kernel_version_short").innerHTML = "error " + ver_result.errno;
 		document.getElementById("kernel_version_short").style.color = '#FFA500';
 	}
+	await onePlusDetect();
 	addEventListeners();
 	const curl_int_result = await exec("curl --version");
 	if(curl_int_result.errno == 0) {

@@ -1,0 +1,43 @@
+STR_BRAND="Brand"
+STR_WELLCOME_MESSAGE="Start patching boot KernelSU Next"
+STR_RAW_KERNEL_VERSION="Raw kernel image: "
+STR_DOWNLOAD_FAIL="Download fail"
+STR_IS_ONEPLUS="Your device apears to be OnePlus/Realme"
+STR_IS_NOT_ONEPLUS="Your device NOT apears to be OnePlus/Realme"
+STR_IS_ONEPLUS_KERNEL="Your boot will be flashed with OnePlus/Realme kernel
+[!] ATENTION Flashing wrong kernel type can cause bootloop"
+STR_IS_NOT_ONEPLUS_KERNEL="Your boot will flashed with generic (non OnePlus) kernel
+[!] ATENTION Flashing wrong kernel type can cause bootloop"
+STR_USER_INPUT_MESSAGE="VOL+ comply
+VOL- change type"
+STR_USER_APROVE_MESSAGE="VOL+ continue
+VOL- exit"
+STR_CURRENT_KERNEL_VERSION="Current kernel version"
+STR_TEMP_DIR_PREPARE="Prepare temporary directory"
+STR_SWITCH_TO_INTERNAL_CURL="System curl is absent. Will use internal"
+STR_GITHUB_API_CHECK="Checking access Github.api"
+STR_GITHUB_API_FAIL="
+  | Github.api not accessable
+  | Try to turn off adblock
+  | Or try to use VPN
+"
+STR_KERNEL_VERSIONS_REPO_MESSAGE="Requesting releases from repo"
+STR_SEARCHING_KERNEL_PREFIX="Searching for kernel"
+STR_SEARCHING_KERNEL_SUFFIX="in releases..."
+STR_SEARCHING_KERNEL_FAIL="No suitable kernel found"
+STR_SEARCHING_KERNEL_SUCCESS="Suitable kernel been found"
+STR_BEGIN_DOWNLOAD="Downloading..."
+STR_DOWNLOAD_FAIL="Download fail"
+STR_DOWNLOAD_SUCCESS="Download success into "
+STR_UNPACKING="Unpacking busybox and update-binary from archive..."
+STR_MOUNTING="Creating tmpfs and mounting..."
+STR_EXECUTING="Executing update-binary for kernel update..."
+STR_ACTIVE_SUCCESS="Kernel successfuly installed to an active slot"
+STR_ACTIVE_FAIL="Fail to update kernel"
+STR_INACTIVE_SUCCESS="Kernel successfuly installed over ОТА"
+STR_INACTIVE_FAIL="Use onlyu after ОТА"
+STR_UNMOUNTING="Compleete operations and clearing tmp files..."
+STR_DRY_RUN_SUCCESS="Kernel archive downloaded and unpacked successfuly"
+STR_ACTIVE_SLOT_INSTALL="Installing to an active slot"
+STR_INACTIVE_SLOT_INSTALL="Installing to an inactive slot"
+STR_WAIT="Please wait ..."

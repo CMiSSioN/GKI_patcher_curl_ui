@@ -14,5 +14,7 @@
 	"str_version_abcent" : "There are no kernel versions having any chance to function properly on your device. There are two options. First your current kernel is very new - its support might been added in nearest future, just wait patiantly. Second your kervel is too old and does not supports GKI2, in that case you should search for kernel with buildin KernelSU or build it by yourself. Any way best wishes in your upcoming quest",
 	"str_request_versions" : "Requesting versions",
 	"str_install_kernel" : "Install kernel: ",
+	"str_is_oneplus" : "Oneplus/Realme kernel",
+	"str_oneplus_warning": "Oneplus / Realme devices have own GKI line not compatible other devices. Flashin not compatible kernel can cause bootloop",
 	"str_start" : "Start"
 }
