@@ -4,7 +4,7 @@ log() { echo "$1"; }
 
 LOCALE=$(getprop persist.sys.locale)
 LOCALE_FILE="/data/adb/modules/gki_patcher_curl_ui/webroot/lang/$LOCALE.sh"
-if [ -e $LOCALE_FILE ]; then
+if ! [ -e $LOCALE_FILE ]; then
   LOCALE_FILE="/data/adb/modules/gki_patcher_curl_ui/webroot/lang/en-US.sh"
 fi
 source "$LOCALE_FILE"
@@ -27,7 +27,7 @@ log "ACTIVE_SLOT:$ACTIVE_SLOT"
 log "INACTIVE_SLOT:$INACTIVE_SLOT"
 url="https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases"
 
-log "Проверка доступа к Github.api"
+log "$STR_GITHUB_API_CHECK"
 if ! $CURL --silent --head --fail "$url" > /dev/null; then
     log "$STR_GITHUB_API_FAIL"
     exit 1

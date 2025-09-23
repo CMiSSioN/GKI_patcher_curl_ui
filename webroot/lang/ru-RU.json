@@ -16,5 +16,8 @@
 	"str_install_kernel" : "Установить ядро: ",
 	"str_is_oneplus" : "Ядро Oneplus/Realme",
 	"str_oneplus_warning": "Устройства OnePlus / Realme имеют свою линейку ядер несовместимую с другими устройствами",
+	"str_need_choose_kernel":"<span style='color:#FFA500'>Необходимо выбрать ядро для установки</spawn>",
+	"str_action_exit":"Завершено",
+	"str_reboot":"Перезагрузитесь для применения эффекта",
 	"str_start" : "Старт"
 }

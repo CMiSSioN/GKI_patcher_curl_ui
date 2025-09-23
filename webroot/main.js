@@ -13,6 +13,8 @@ const MAX_FONT_SIZE = 24;
 let initialPinchDistance = null;
 let releases_url = "";
 let is_oneplus = false;
+let oneplus_model = "";
+let localizationDATA = null;
 
 function appendToOutput(content) {
 	const output = document.querySelector('.output-terminal-content');
@@ -61,10 +63,10 @@ async function doTranslate(){
 		localeData = await getTranslation("en-US");
 	}
 	//appendToOutput(localeData);
-	const localeJSON = JSON.parse(localeData);
+	localizationDATA = JSON.parse(localeData);
 	let locElements = document.querySelectorAll('.localize');
 	locElements.forEach(function(element){
-		element.innerHTML = localeJSON[element.id];
+		element.innerHTML = localizationDATA[element.id];
 	});
 }
 
@@ -115,6 +117,56 @@ function spawn(command, args = []) {
 //"https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases"
 
 async function onePlusDetect(){
+	const model_result = await exec("getprop ro.product.model");
+	if(model_result.errno == 0){
+		if(model_result.stdout == "PJA110"){ oneplus_model = "OP-ACE-2-PRO"; }else
+		if(model_result.stdout == "PHK110"){ oneplus_model = "OP-ACE-2"; }else
+		if(model_result.stdout == "PKG110"){ oneplus_model = "OP-ACE-5"; }else
+		if(model_result.stdout == "CPH2661"){ oneplus_model = "OP-NORD-4"; }else
+		if(model_result.stdout == "RMX3852"){ oneplus_model = "OP-NORD-4"; }else
+		if(model_result.stdout == "RMX3851"){ oneplus_model = "OP-NORD-4"; }else
+		if(model_result.stdout == "CPH2663"){ oneplus_model = "OP-NORD-4"; }else
+		if(model_result.stdout == "PHN110"){ oneplus_model = "OP-OPEN"; }else
+		if(model_result.stdout == "CPH2551"){ oneplus_model = "OP-OPEN"; }else
+		if(model_result.stdout == "CPH2499"){ oneplus_model = "OP-OPEN"; }else
+		if(model_result.stdout == "OPD2404"){ oneplus_model = "OP-PAD-2"; }else
+		if(model_result.stdout == "OPD2403"){ oneplus_model = "OP-PAD-2"; }else
+		if(model_result.stdout == "NE2210"){ oneplus_model = "OP10pro"; }else
+		if(model_result.stdout == "NE2211"){ oneplus_model = "OP10pro"; }else
+		if(model_result.stdout == "NE2213"){ oneplus_model = "OP10pro"; }else
+		if(model_result.stdout == "NE2215"){ oneplus_model = "OP10pro"; }else
+		if(model_result.stdout == "NE2217"){ oneplus_model = "OP10pro"; }else
+		if(model_result.stdout == "RMX3709"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "CPH2413"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "CPH2415"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "CPH2417"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "CPH2419"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "CPH2487"){ oneplus_model = "OP11r"; }else
+		if(model_result.stdout == "PHB110"){ oneplus_model = "OP11"; }else
+		if(model_result.stdout == "CPH2447"){ oneplus_model = "OP11"; }else
+		if(model_result.stdout == "CPH2449"){ oneplus_model = "OP11"; }else
+		if(model_result.stdout == "CPH2451"){ oneplus_model = "OP11"; }else
+		if(model_result.stdout == "CPH2585"){ oneplus_model = "OP12r"; }else
+		if(model_result.stdout == "CPH2609"){ oneplus_model = "OP12r"; }else
+		if(model_result.stdout == "CPH2611"){ oneplus_model = "OP12r"; }else
+		if(model_result.stdout == "CPH2573"){ oneplus_model = "OP12"; }else
+		if(model_result.stdout == "CPH2581"){ oneplus_model = "OP12"; }else
+		if(model_result.stdout == "RMX3800"){ oneplus_model = "OP12"; }else
+		if(model_result.stdout == "CPH2583"){ oneplus_model = "OP12"; }else
+		if(model_result.stdout == "RMX5011"){ oneplus_model = "OP13"; }else
+		if(model_result.stdout == "CPH2655"){ oneplus_model = "OP13"; }else
+		if(model_result.stdout == "CPH2653"){ oneplus_model = "OP13"; }else
+		if(model_result.stdout == "CPH2649"){ oneplus_model = "OP13"; }else
+		if(model_result.stdout == "CPH2645"){ oneplus_model = "OP13r"; }else
+		if(model_result.stdout == "CPH2647"){ oneplus_model = "OP13r"; }else
+		if(model_result.stdout == "CPH2691"){ oneplus_model = "OP13r"; }else
+		if(model_result.stdout == "CPH2723"){ oneplus_model = "OP13S"; }else
+		if(model_result.stdout == "CPH2621"){ oneplus_model = "OP-ACE-3V"; }else
+		//if(model_result.stdout == "Armor 25T Pro"){ oneplus_model = "OP-ACE-2"; }else
+		if(model_result.stdout == "PJF110"){ oneplus_model = "OP-ACE-3V"; } else {
+			oneplus_model = model_result.stdout;
+		}
+	}
 	const brand_result = await exec("getprop ro.product.product.brand");
 	if(brand_result.errno == 0){
 		let brand = brand_result.stdout.toUpperCase();
@@ -164,9 +216,9 @@ function getKernels(){
 			// 	if(release.body.includes("https://github.com/KernelSU-Next/KernelSU-Next/commit")){ release_index = index; return false; }
 			// 	return true;
 			// });
-			let regex = /^.*-android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
+			let regex = /^([a-zA-Z0-9\-]+)-android([0-9]+).([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
 			if(is_oneplus){
-				regex = /^AnyKernel3.*_android([0-9]+)-([0-9]+).([0-9]+).([0-9]+)_.*.zip$/;
+				regex = /^AnyKernel3_([a-zA-Z0-9\-]+)_android([0-9]+).([0-9]+).([0-9]+).([0-9]+)_.*zip$/;
 			}
 			loading_releases = 0;
 			//const versionsSel = document.createElement("select");
@@ -180,13 +232,18 @@ function getKernels(){
 				release.assets.forEach(function(asset) {
 					const ver = regex.exec(asset.name);
 					if(ver !== null){
-						const android = ver[1];
-						const major = ver[2];
-						const minor = ver[3];
-						const suffix = ver[4];
+						const model = ver[1];
+						const android = ver[2];
+						const major = ver[3];
+						const minor = ver[4];
+						const suffix = ver[5];
+						//appendToOutput("'"+model+"' '"+);
 						if(major != kernel_major){ return; }
 						if(minor != kernel_minor){ return; }
 						if(suffix != kernel_suffix){ return; }
+						if(is_oneplus){
+							if(model != oneplus_model) { return; }
+						}
 						const option = new Option(asset.name, asset.browser_download_url);
 						versionsSel.add(option);
 						has_any_version = true;
@@ -204,10 +261,11 @@ function getKernels(){
 					release.assets.forEach(function(asset) {
 						const ver = regex.exec(asset.name);
 						if(ver !== null){
-							const android = ver[1];
-							const major = ver[2];
-							const minor = ver[3];
-							const suffix = ver[4];
+							const model = ver[1];
+							const android = ver[2];
+							const major = ver[3];
+							const minor = ver[4];
+							const suffix = ver[5];
 							if(major != kernel_major){ return; }
 							if(minor != kernel_minor){ return; }
 							const option = new Option(asset.name, asset.browser_download_url);
@@ -246,12 +304,12 @@ function getKernels(){
 		.catch(error => {
 			document.getElementById("kernel_select_icon").style.display = 'none';
 			document.getElementById("version_error_container").style.display = '';
-			document.getElementById("version_error").innerHTML = "Ошибка получения или разбора JSON:"+error;
+			document.getElementById("version_error").innerHTML = "ERROR:"+error;
 		});
 	} catch (error){
 		document.getElementById("kernel_select_icon").style.display = 'none';
 		document.getElementById("version_error_container").style.display = '';
-		document.getElementById("version_error").innerHTML = "Ошибка получения или разбора JSON:"+error;
+		document.getElementById("version_error").innerHTML = "ERROR:"+error;
 	}
 }
 
@@ -269,7 +327,7 @@ function runAction() {
 	currentFontSize = 10;
 	updateFontSize(currentFontSize);
 	if(kernel_url.value.length < 10){
-		output.innerHTML = "<span style='color:#FFA500'>Необходимо выбрать ядро для установки</spawn>";
+		output.innerHTML = localizationDATA.str_need_choose_kernel;
 		return;
 	}
 	output.innerHTML = "";
@@ -285,9 +343,9 @@ function runAction() {
 	scriptOutput.stdout.on('data', (data) => appendToOutput(data));
 	scriptOutput.stderr.on('data', (data) => appendToOutput(data));
 	scriptOutput.on('exit', () => {
-			appendToOutput("Завершено");
+			appendToOutput(localizationDATA.str_action_exit);
 			if((!document.getElementById('toggle-dry-run').checked) && ((document.getElementById('toggle-active-slot').checked) || (document.getElementById('toggle-inactive-slot').checked)) ){
-				appendToOutput("Перезагрузитесь для применения эффекта");
+				appendToOutput(localizationDATA.str_reboot);
 			}
 			shellRunning = false;
 	});
@@ -399,13 +457,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const kernel_and = kernel_android_regex.exec(ver_result.stdout);
 		if(kernel_ver !== null){
 			kernel_major = kernel_ver[1];
-			//kernel_major = 4;
 			kernel_minor = kernel_ver[2];
 			kernel_suffix = kernel_ver[3];
+			//kernel_major = 5;
+			//kernel_minor = 10;
+			//kernel_suffix = 226;
 		}
 		if(kernel_and != null){
 			kernel_android = kernel_and[1];
-			//kernel_android = 19;
+			//kernel_android = 12;
 		}
 		if((kernel_major != -1) && (kernel_android != -1)){
 			document.getElementById("kernel_version_short").innerHTML = kernel_major+"."+kernel_minor+"."+kernel_suffix+"-android"+kernel_android;

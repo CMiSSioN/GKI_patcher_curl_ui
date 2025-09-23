@@ -16,5 +16,8 @@
 	"str_install_kernel" : "Install kernel: ",
 	"str_is_oneplus" : "Oneplus/Realme kernel",
 	"str_oneplus_warning": "Oneplus / Realme devices have own GKI line not compatible other devices. Flashin not compatible kernel can cause bootloop",
+	"str_need_choose_kernel":"<span style='color:#FFA500'>You should choose kernel to flash</spawn>",
+	"str_action_exit":"Completed",
+	"str_reboot":"Reboot is adviced to get an effect",
 	"str_start" : "Start"
 }

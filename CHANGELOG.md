@@ -1,5 +1,7 @@
-## v3.3 (upcoming)
+## v3.3
 - buildin OnePlus/Realme support
+- now action asks for user interaction before kernel flashing
+- localization fixes
 ## v3.2
 - added EN localization
 ## v3.1.7
