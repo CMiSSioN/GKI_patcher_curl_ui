@@ -19,5 +19,8 @@
 	"str_need_choose_kernel":"<span style='color:#FFA500'>You should choose kernel to flash</spawn>",
 	"str_action_exit":"Completed",
 	"str_reboot":"Reboot is adviced to get an effect",
+	"str_info":"Version info",
+	"str_is_any_build":"Any kernel build ver.",
+	"str_any_build_warning": "Allow any to install kernels with any build version (third number in kernel version)",
 	"str_start" : "Start"
 }

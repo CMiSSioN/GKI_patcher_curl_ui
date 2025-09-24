@@ -20,7 +20,7 @@
                 </h3>
             </div>
             <div class="button-box">
-                <div class="toggle-list ripple-element" id="kernel_version">
+                <div class="toggle-list toggle-border ripple-element" id="kernel_version">
                     <table><tr><td>
                     <i class="fas fa-plus toggle-icon" id="kernel_version_icon"></i>
                     <span class="toggle-text"><span class="localize" id="str_kernel_version">unlocalized</span></span>
@@ -28,7 +28,7 @@
                     <tr><td><span class="output-info-content" style="display:none;" id="kernel_version_full"></span></td></tr>
                     </table>
                 </div>
-                <div class="toggle-list ripple-element" id="curl_version">
+                <div class="toggle-list toggle-border ripple-element" id="curl_version">
                     <table><tr><td>
                     <i class="fas fa-plus toggle-icon" id="curl_version_icon"></i>
                     <span class="toggle-text">
@@ -41,54 +41,68 @@
                     <tr><td><span class="output-info-content" style="display:none;" id="curl_version_full"></span></td></tr>
                     </table>
                 </div>
-                <div class="toggle-list ripple-element">
+                <div class="toggle-list toggle-border ripple-element">
                     <span class="toggle-text"><span class="localize" id="str_dry_run">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-dry-run" enabled >
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="toggle-list ripple-element">
+                <div class="toggle-list toggle-border ripple-element">
                     <span class="toggle-text"><span class="localize" id="str_into_active_slot">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-active-slot" enabled checked>
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="toggle-list ripple-element">
+                <div class="toggle-list toggle-border ripple-element">
                     <span class="toggle-text"><span class="localize" id="str_into_inactive_slot">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-inactive-slot" enabled>
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="toggle-list ripple-element">
-                    <span class="toggle-text"><span class="localize" id="str_oneplus_warning">unlocalized</span></span>
-                </div>
-                <div class="toggle-list ripple-element">
-                    <span class="toggle-text"><span class="localize" id="str_is_oneplus">unlocalized</span></span>
+                <div class="toggle-list toggle-border ripple-element" id="is_oneplus_container">
+                    <i id="is_oneplus_icon" class="fas fa-info-circle toggle-icon"></i>
+                    <span id="is_oneplus_text" class="toggle-text"><span class="localize" id="str_is_oneplus">unlocalized</span></span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggle-is-oneplus" enabled>
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="toggle-list ripple-element" id="kernel_select_info">
+                <div class="toggle-list toggle-border ripple-element" id="is_oneplus_help" style="display:none">
+                    <span class="output-info-content"><span class="localize" id="str_oneplus_warning">unlocalized</span></span>
+                </div>
+                <div class="toggle-list toggle-border ripple-element" id="is_any_build_container">
+                    <i id="is_any_build_icon" class="fas fa-info-circle toggle-icon"></i>
+                    <span id="is_any_build_text" class="toggle-text"><span class="localize" id="str_is_any_build">unlocalized</span></span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-is-any-build" enabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="toggle-list toggle-border ripple-element" id="is_any_build_help" style="display:none">
+                    <span class="output-info-content"><span class="localize" id="str_any_build_warning">unlocalized</span></span>
+                </div>
+                <div class="toggle-list toggle-border ripple-element" id="kernel_select_info_container" style="min-height: 0px;">
                     <table>
+                    <tr id="kernel_select_info" style="display: none"><td><i class="fas fa-solid fa-exclamation-triangle toggle-icon"></i><span class="toggle-text" class="localize" id="str_info"><span>Информация</span></span></td></tr>
+                    <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text"><span class="localize" id="str_request_versions">Запрос версий</span></span></td></tr>
+                    <tr><td><table id="version_select_info" style="display:none">
                     <tr id="version_error_container" style='display:none'><td><span style='color: #FFA500;' class="output-info-content" id="version_error" ></span></td></tr>
                     <tr id="version_success" style='display:none'><td><span style='color: #089700;' class="output-info-content" ><span class="localize" id="str_version_success">unlocalized</span></span></td></tr>
                     <tr id="version_fail" style='display:none'><td><span style='color: #FFA500' class="output-info-content"><span class="localize" id="str_version_fail">unlocalized</span></span></td></tr>
                     <tr id="version_abcent" style='display:none'><td><span style='color: #FFA500' class="output-info-content"><span class="localize" id="str_version_abcent">unlocalized</span></span>
-                    </td></tr>
-                    <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text"><span class="localize" id="str_request_versions">Запрос версий</span></span></td></tr>
+                    </table></td></tr>
                     </table>
                 </div>
-                <div class="toggle-list ripple-element" id="versions_container" style='display:none'>
+                <div class="toggle-list toggle-border ripple-element" id="versions_container" style='display:none'>
                   <table>
                   <tr><td><span class="toggle-text"><span class="localize" id="str_install_kernel">Установить ядро: </span></span></tr></td>
                   <tr><td><select id="versions" style="width: 280px"><option value=""><span class="localize" id="str_version_unchoosen">unlocalized</span></option></select></tr></td>
                   </table>
                 </div>
-                <div class="toggle-list ripple-element" id="action_button" style='display:none'>
+                <div class="toggle-list toggle-border ripple-element" id="action_button" style='display:none'>
                     <i class="fas fa-play toggle-icon"></i>
                     <span class="toggle-text"><span class="localize" id="str_start">Старт</span></span>
                 </div>

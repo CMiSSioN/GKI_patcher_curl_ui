@@ -144,11 +144,14 @@ body {
     padding: 10px 18px; /* Reduzido de 12px 20px */
     white-space: nowrap;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.toggle-border {
+    border-bottom: 1px solid var(--border-color);
 }
 
 .toggle-list:hover {

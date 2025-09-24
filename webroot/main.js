@@ -190,12 +190,16 @@ function getKernels(){
 		}
 		const versionsSel = document.getElementById("versions");
 		const versionsCont = document.getElementById("versions_container");
+		const isAnyBuild = document.getElementById("toggle-is-any-build");
 		versionsCont.style.display = "none";
+		document.getElementById("kernel_select_info_container").classList.add("toggle-border");
+		document.getElementById("kernel_select_info").style.display = 'none';
 		document.getElementById("version_success").style.display = 'none';
 		document.getElementById("version_fail").style.display = 'none';
 		document.getElementById("version_abcent").style.display = 'none';
 		document.getElementById("kernel_select_icon").style.display = '';
 		document.getElementById("toggle-is-oneplus").disabled = true;
+		isAnyBuild.disabled = true;
 		while (versionsSel.options.length > 1) {
 			versionsSel.remove(1); // Repeatedly remove the first option
 		}
@@ -240,7 +244,12 @@ function getKernels(){
 						//appendToOutput("'"+model+"' '"+);
 						if(major != kernel_major){ return; }
 						if(minor != kernel_minor){ return; }
-						if(suffix != kernel_suffix){ return; }
+						if(!isAnyBuild.checked){
+							if(suffix != kernel_suffix){ return; }
+						}
+						if(kernel_android > 0){
+							if(android != kernel_android) { return; }
+						}
 						if(is_oneplus){
 							if(model != oneplus_model) { return; }
 						}
@@ -268,6 +277,9 @@ function getKernels(){
 							const suffix = ver[5];
 							if(major != kernel_major){ return; }
 							if(minor != kernel_minor){ return; }
+							if(kernel_android > 0){
+								if(android != kernel_android) { return; }
+							}
 							const option = new Option(asset.name, asset.browser_download_url);
 							versionsSel.add(option);
 							has_any_version = true;
@@ -277,6 +289,9 @@ function getKernels(){
 			}
 			document.getElementById("kernel_select_icon").style.display = 'none';
 			document.getElementById("toggle-is-oneplus").disabled = false;
+			isAnyBuild.disabled = false;
+			document.getElementById("kernel_select_info").style.display = '';
+			document.getElementById("kernel_select_info_container").classList.remove("toggle-border");
 			if(version_selected.length > 0){
 				versionsSel.value = version_selected;
 				document.getElementById("version_success").style.display = '';
@@ -411,6 +426,65 @@ function addEventListeners(){
 			getKernels();
 		}
 	})
+	const is_any_build_box = document.getElementById("toggle-is-any-build");
+	is_any_build_box.addEventListener('change', (event) => {
+		if (!event.currentTarget.disabled) {
+			getKernels();
+		}
+	})
+	const is_oneplus_container = document.getElementById("is_oneplus_container");
+	const is_oneplus_help = document.getElementById("is_oneplus_help");
+	const is_oneplus_text = document.getElementById("is_oneplus_text");
+	const is_oneplus_icon = document.getElementById("is_oneplus_icon");
+	is_oneplus_text.addEventListener('click', () => {
+		if(is_oneplus_help.style.display == 'none'){
+			is_oneplus_help.style.display = "";
+			is_oneplus_container.classList.remove("toggle-border");
+		} else {
+			is_oneplus_help.style.display = "none";
+			is_oneplus_container.classList.add("toggle-border");
+		}
+	});
+	is_oneplus_icon.addEventListener('click', () => {
+		if(is_oneplus_help.style.display == 'none'){
+			is_oneplus_help.style.display = "";
+			is_oneplus_container.classList.remove("toggle-border");
+		} else {
+			is_oneplus_help.style.display = "none";
+			is_oneplus_container.classList.add("toggle-border");
+		}
+	});
+	const is_any_build_container = document.getElementById("is_any_build_container");
+	const is_any_build_help = document.getElementById("is_any_build_help");
+	const is_any_build_text = document.getElementById("is_any_build_text");
+	const is_any_build_icon = document.getElementById("is_any_build_icon");
+	is_any_build_text.addEventListener('click', () => {
+		if(is_any_build_help.style.display == 'none'){
+			is_any_build_help.style.display = "";
+			is_any_build_container.classList.remove("toggle-border");
+		} else {
+			is_any_build_help.style.display = "none";
+			is_any_build_container.classList.add("toggle-border");
+		}
+	});
+	is_any_build_icon.addEventListener('click', () => {
+		if(is_any_build_help.style.display == 'none'){
+			is_any_build_help.style.display = "";
+			is_any_build_container.classList.remove("toggle-border");
+		} else {
+			is_any_build_help.style.display = "none";
+			is_any_build_container.classList.add("toggle-border");
+		}
+	});
+	const kernel_select_info_container = document.getElementById("kernel_select_info_container");
+	const version_select_info = document.getElementById("version_select_info");
+	kernel_select_info_container.addEventListener('click', () => {
+		if(version_select_info.style.display == 'none'){
+			version_select_info.style.display = "";
+		} else {
+			version_select_info.style.display = "none";
+		}
+	});
 	// terminal.addEventListener('touchstart', (e) => {
 	// 		if (e.touches.length === 2) {
 	// 				e.preventDefault();
