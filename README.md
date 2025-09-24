@@ -40,7 +40,6 @@
 - Устройство с **KernelSU Next**
 - Поддержка **GKI2**
 - Интернет-соединение
-- ❌ **Не поддерживаются устройства**: Oppo, Vivo, OnePlus, Realme  
 - ✅ **Перед использованием убедитесь**, что ваше устройство совместимо с ядрами из [репозитория WildKernels](https://github.com/WildKernels/GKI_KernelSU_SUSFS/releases)
 
 ---
