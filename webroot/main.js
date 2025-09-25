@@ -280,7 +280,7 @@ function extractVersion(name){
 
 function fillKernels(){
 	try {
-		document.querySelector('.output-terminal-content').innerHTML = '';
+		//document.querySelector('.output-terminal-content').innerHTML = '';
 		//appendToOutput("fillKernels:"+is_oneplus.toString());
 		const versionsSel = document.getElementById("versions");
 		const versionsCont = document.getElementById("versions_container");
@@ -477,6 +477,23 @@ function addEventListeners(){
 			kernel_version_full.style.display = "none";
 		}
 	});
+	const ksu_version = document.getElementById('ksu_version');
+	ksu_version.addEventListener('click', () => {
+		const ksu_version_full = document.getElementById('ksu_version_full');
+		const ksu_version_short = document.getElementById('ksu_version_short');
+		const ksu_version_icon = document.getElementById('ksu_version_icon');
+		if(ksu_version_full.style.display == "none"){
+			ksu_version_icon.classList.remove("fa-plus");
+			ksu_version_icon.classList.add("fa-minus");
+			ksu_version_short.style.display = "none";
+			ksu_version_full.style.display = "block";
+		} else {
+			ksu_version_icon.classList.remove("fa-minus");
+			ksu_version_icon.classList.add("fa-plus");
+			ksu_version_short.style.display = "inline-block";
+			ksu_version_full.style.display = "none";
+		}
+	});
 	const curl_version = document.getElementById('curl_version');
 	curl_version.addEventListener('click', () => {
 		const curl_version_full = document.getElementById('curl_version_full');
@@ -625,7 +642,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 		if(kernel_and != null){
 			kernel_android = kernel_and[1];
-			//kernel_android = 12;
+			//kernel_android = -1;
+		}
+		if(kernel_android <= 0){
+			const kmi_result = await exec("/data/adb/ksud boot-info current-kmi");
+			const kmi_android_regex = /^android([0-9]+)\-([0-9]+).([0-9]+)$/;
+			if(kmi_result.errno == 0){
+				const kmi_ver = kmi_android_regex.exec(kmi_result.stdout);
+				if(kmi_ver != null){
+					kernel_android = kmi_ver[1];
+					kernel_major = kmi_ver[2];
+					kernel_minor = kmi_ver[3];
+				}
+			}
 		}
 		if((kernel_major != -1) && (kernel_android != -1)){
 			document.getElementById("kernel_version_short").innerHTML = kernel_major+"."+kernel_minor+"."+kernel_suffix+"-android"+kernel_android;
@@ -640,6 +669,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 	} else {
 		document.getElementById("kernel_version_short").innerHTML = "error " + ver_result.errno;
 		document.getElementById("kernel_version_short").style.color = '#FFA500';
+	}
+	const ksud_result = await exec("/data/adb/ksud debug version");
+	const ksu_version_regex = /^Kernel Version: ([0-9]+)*$/
+	if(ksud_result.errno == 0) {
+		document.getElementById("ksu_version_full").innerHTML = ksud_result.stdout;
+		const ksu_ver = ksu_version_regex.exec(ksud_result.stdout);
+		if(ksu_ver !== null){
+			document.getElementById("ksu_version_short").innerHTML = ksu_ver[1];
+		}
 	}
 	await onePlusDetect();
 	addEventListeners();

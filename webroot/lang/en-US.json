@@ -22,5 +22,6 @@
 	"str_info":"Version info",
 	"str_is_any_build":"Any kernel build ver.",
 	"str_any_build_warning": "Allow any to install kernels with any build version (third number in kernel version)",
+	"str_ksu_version": "KSU kernel version: ",
 	"str_start" : "Start"
 }
