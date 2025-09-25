@@ -15,6 +15,8 @@ let releases_url = "";
 let is_oneplus = false;
 let oneplus_model = "";
 let localizationDATA = null;
+let OnePlus_releases = null;
+let GKI_releases = null;
 
 function appendToOutput(content) {
 	const output = document.querySelector('.output-terminal-content');
@@ -119,6 +121,7 @@ function spawn(command, args = []) {
 async function onePlusDetect(){
 	const model_result = await exec("getprop ro.product.model");
 	if(model_result.errno == 0){
+		is_oneplus = true;
 		if(model_result.stdout == "PJA110"){ oneplus_model = "OP-ACE-2-PRO"; }else
 		if(model_result.stdout == "PHK110"){ oneplus_model = "OP-ACE-2"; }else
 		if(model_result.stdout == "PKG110"){ oneplus_model = "OP-ACE-5"; }else
@@ -162,32 +165,123 @@ async function onePlusDetect(){
 		if(model_result.stdout == "CPH2691"){ oneplus_model = "OP13r"; }else
 		if(model_result.stdout == "CPH2723"){ oneplus_model = "OP13S"; }else
 		if(model_result.stdout == "CPH2621"){ oneplus_model = "OP-ACE-3V"; }else
-		//if(model_result.stdout == "Armor 25T Pro"){ oneplus_model = "OP-ACE-2"; }else
+//		if(model_result.stdout == "Armor 25T Pro"){ oneplus_model = "OP-ACE-2"; }else
 		if(model_result.stdout == "PJF110"){ oneplus_model = "OP-ACE-3V"; } else {
 			oneplus_model = model_result.stdout;
+			is_oneplus = false;
 		}
 	}
-	const brand_result = await exec("getprop ro.product.product.brand");
-	if(brand_result.errno == 0){
-		let brand = brand_result.stdout.toUpperCase();
-		//brand = "OPLUS";
-		if( (brand == "ONEPLUS") || (brand == "OPLUS") || (brand == "REALME") ) {
-			releases_url = "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases";
-			document.getElementById("toggle-is-oneplus").checked = true;
-			is_oneplus = true;
-			return;
-		}
-	}
-	document.getElementById("toggle-is-oneplus").checked = false;
-	releases_url = "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases";
-	is_oneplus = false;
+	document.getElementById("toggle-is-oneplus").checked = is_oneplus;
+	// const brand_result = await exec("getprop ro.product.product.brand");
+	// if(brand_result.errno == 0){
+	// 	let brand = brand_result.stdout.toUpperCase();
+	// 	//brand = "OPLUS";
+	// 	if( (brand == "ONEPLUS") || (brand == "OPLUS") || (brand == "REALME") ) {
+	// 		document.getElementById("toggle-is-oneplus").checked = true;
+	// 		is_oneplus = true;
+	// 		return;
+	// 	}
+	// }
+	// document.getElementById("toggle-is-oneplus").checked = false;
+	// is_oneplus = false;
 }
 
-function getKernels(){
+function fetchReleases(){
+	document.getElementById("toggle-is-oneplus").disabled = true;
+	//appendToOutput("fetchReleases");
 	try {
-		while(true){
-			if(releases_url.length != 0){ break; }
+		//appendToOutput("fetch GKI releases");
+		fetch("https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases").then(response => {
+			// Check if the request was successful (status code 200-299)
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+    // Parse the response body as JSON
+			return response.json();
+		})
+		.then(data => {
+			GKI_releases = data;
+			//appendToOutput("got GKI releases");
+		})
+		.catch(error => {
+		});
+	} catch (error){
+	}
+	try {
+		fetch("https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases").then(response => {
+			// Check if the request was successful (status code 200-299)
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+    // Parse the response body as JSON
+			return response.json();
+		})
+		.then(data => {
+			OnePlus_releases = data;
+			//appendToOutput("got OnePlus releases");
+		})
+		.catch(error => {
+		});
+	} catch (error){
+	}
+	waitForReleases();
+	// appendToOutput("waiting");
+	// let watchdog = 100;
+	// while( GKI_releases === null ) {
+	// 	let now = new Date();
+	// 	watchdog = watchdog - 1;
+	// 	sleep(1000);
+	// 	appendToOutput("time:"+now.getSeconds()+" watchdog:"+watchdog);
+	// }
+	// appendToOutput("done");
+}
+
+function waitForReleases(){
+	if( (GKI_releases === null) || (OnePlus_releases === null) ){
+		setTimeout(waitForReleases, 100);
+	} else {
+		document.getElementById("toggle-is-oneplus").disabled = false;
+		fillKernels();
+	}
+}
+
+function extractVersion(name){
+	try {
+		if(is_oneplus){
+			let regex = /^AnyKernel3_([a-zA-Z0-9\-]+)_android([0-9]+).([0-9\.]+)_[a-zA-Z]+_([0-9]+)_.*zip$/;
+			const ver = regex.exec(name);
+			if(ver !== null){
+				const model = ver[1];
+				const android = ver[2];
+				const kernel = ver[3];
+				const driver = ver[4];
+				return [true, model, 0, 0, 0, android, driver];
+			} else {
+				return [false, "", 0, 0, 0, 0, ""];
+			}
+		} else {
+			let regex = /^([a-zA-Z0-9\-]+)-android([0-9]+).([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
+			const ver = regex.exec(name);
+			if(ver !== null){
+				const driver = ver[1];
+				const android = ver[2];
+				const major = ver[3];
+				const minor = ver[4];
+				const suffix = ver[5];
+				return [true, "", major, minor, suffix, android, driver];
+			} else {
+				return [false, "", 0, 0, 0, 0, ""];
+			}
 		}
+	} catch (error) {
+		appendToOutput("ERROR:"+error);
+	}
+}
+
+function fillKernels(){
+	try {
+		document.querySelector('.output-terminal-content').innerHTML = '';
+		//appendToOutput("fillKernels:"+is_oneplus.toString());
 		const versionsSel = document.getElementById("versions");
 		const versionsCont = document.getElementById("versions_container");
 		const isAnyBuild = document.getElementById("toggle-is-any-build");
@@ -198,129 +292,123 @@ function getKernels(){
 		document.getElementById("version_fail").style.display = 'none';
 		document.getElementById("version_abcent").style.display = 'none';
 		document.getElementById("kernel_select_icon").style.display = '';
-		document.getElementById("toggle-is-oneplus").disabled = true;
+		document.getElementById("action_button").style.display = 'none';
 		isAnyBuild.disabled = true;
 		while (versionsSel.options.length > 1) {
 			versionsSel.remove(1); // Repeatedly remove the first option
 		}
-		//versions.innerHTML = "получение доступных версий ядер .";
-		//loading_releases = 1;
-		//setTimeout(loadingReleasesTick, 500);
-		fetch(releases_url).then(response => {
-			// Check if the request was successful (status code 200-299)
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-    // Parse the response body as JSON
-			return response.json();
-		})
-		.then(data => {
-			var release_index = 0;
-			// data.every(function(release, index) {
-			// 	if(release.body.includes("https://github.com/KernelSU-Next/KernelSU-Next/commit")){ release_index = index; return false; }
-			// 	return true;
-			// });
-			let regex = /^([a-zA-Z0-9\-]+)-android([0-9]+).([0-9]+).([0-9]+).([0-9]+)-.*-AnyKernel3.zip$/;
-			if(is_oneplus){
-				regex = /^AnyKernel3_([a-zA-Z0-9\-]+)_android([0-9]+).([0-9]+).([0-9]+).([0-9]+)_.*zip$/;
-			}
-			loading_releases = 0;
-			//const versionsSel = document.createElement("select");
-			//versionsSel.id = 'kernel_select';
-			//versionsSel.name = 'kernel_select';
-			var version_selected = "";
-			//const option = new Option("un", "");
-			//versionsSel.add(option);
-			var has_any_version = false;
-			data.forEach(function(release){
-				release.assets.forEach(function(asset) {
-					const ver = regex.exec(asset.name);
-					if(ver !== null){
-						const model = ver[1];
-						const android = ver[2];
-						const major = ver[3];
-						const minor = ver[4];
-						const suffix = ver[5];
-						//appendToOutput("'"+model+"' '"+);
-						if(major != kernel_major){ return; }
-						if(minor != kernel_minor){ return; }
-						if(!isAnyBuild.checked){
-							if(suffix != kernel_suffix){ return; }
-						}
-						if(kernel_android > 0){
-							if(android != kernel_android) { return; }
-						}
-						if(is_oneplus){
-							if(model != oneplus_model) { return; }
-						}
+		var release_index = 0;
+		let data = structuredClone(GKI_releases);
+		if(is_oneplus){
+			data = structuredClone(OnePlus_releases);
+		}
+		loading_releases = 0;
+		var version_selected = "";
+		var has_any_version = false;
+		let last_driver = "";
+		let drivers_counter = 0;
+		data.forEach(function(release){
+			//appendToOutput("release");
+			release.assets.forEach(function(asset) {
+				if(drivers_counter > 3) { return; }
+				//appendToOutput(" "+asset.name);
+				const [good, model, major, minor, build, android, driver] = extractVersion(asset.name);
+				//appendToOutput(" good:"+good.toString()+"");
+				//const ver = regex.exec(asset.name);
+				if(good){
+					if(is_oneplus){
+						if(model != oneplus_model) { return; }
+						if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
+						if(drivers_counter > 3) { return; }
 						const option = new Option(asset.name, asset.browser_download_url);
 						versionsSel.add(option);
 						has_any_version = true;
 						if(version_selected.length < 10){
-							if((android == kernel_android) && (major == kernel_major) && (minor == kernel_minor) && (suffix == kernel_suffix)){
+							version_selected = asset.browser_download_url;
+							option.selected = true;
+						}
+					} else {
+						if(major != kernel_major){ return; }
+						if(minor != kernel_minor){ return; }
+						if(!isAnyBuild.checked){
+							if(build != kernel_suffix){ return; }
+						}
+						if(kernel_android > 0){
+							if(android != kernel_android) { return; }
+						}
+						if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
+						if(drivers_counter > 3) { return; }
+						//appendToOutput(" good:"+good.toString()+" major:"+major+" minor:"+minor+" build:"+build+" android:"+android+" driver:"+driver+" counter:"+drivers_counter);
+						const option = new Option(asset.name, asset.browser_download_url);
+						versionsSel.add(option);
+						has_any_version = true;
+						if(version_selected.length < 10){
+							if((android == kernel_android) && (major == kernel_major) && (minor == kernel_minor) && (build == kernel_suffix)){
 								version_selected = asset.browser_download_url;
 								option.selected = true;
 							}
 						}
 					}
-				});
+				}
 			});
-			if(has_any_version === false){
-				data.forEach(function(release){
-					release.assets.forEach(function(asset) {
-						const ver = regex.exec(asset.name);
-						if(ver !== null){
-							const model = ver[1];
-							const android = ver[2];
-							const major = ver[3];
-							const minor = ver[4];
-							const suffix = ver[5];
+		});
+		if(!has_any_version){
+			data.forEach(function(release){
+				release.assets.forEach(function(asset) {
+					if(drivers_counter > 3) { return; }
+					//appendToOutput(asset.name+":"+drivers_counter);
+					const [good, model, major, minor, build, android, driver] = extractVersion(asset.name);
+					//appendToOutput(good.toString()+":"+driver);
+					if(good){
+						if(is_oneplus){
+							if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
+							if(drivers_counter > 3) { return; }
+							const option = new Option(asset.name, asset.browser_download_url);
+							versionsSel.add(option);
+							has_any_version = true;
+						} else {
 							if(major != kernel_major){ return; }
 							if(minor != kernel_minor){ return; }
 							if(kernel_android > 0){
 								if(android != kernel_android) { return; }
 							}
+							if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
+							if(drivers_counter > 3) { return; }
 							const option = new Option(asset.name, asset.browser_download_url);
 							versionsSel.add(option);
 							has_any_version = true;
 						}
-					});
+					}
 				});
-			}
-			document.getElementById("kernel_select_icon").style.display = 'none';
-			document.getElementById("toggle-is-oneplus").disabled = false;
-			isAnyBuild.disabled = false;
-			document.getElementById("kernel_select_info").style.display = '';
-			document.getElementById("kernel_select_info_container").classList.remove("toggle-border");
-			if(version_selected.length > 0){
-				versionsSel.value = version_selected;
-				document.getElementById("version_success").style.display = '';
-				document.getElementById("version_fail").style.display = 'none';
+			});
+		}
+		document.getElementById("kernel_select_icon").style.display = 'none';
+		document.getElementById("toggle-is-oneplus").disabled = false;
+		isAnyBuild.disabled = false;
+		document.getElementById("kernel_select_info").style.display = '';
+		document.getElementById("kernel_select_info_container").classList.remove("toggle-border");
+		if(version_selected.length > 0){
+			versionsSel.value = version_selected;
+			document.getElementById("version_success").style.display = '';
+			document.getElementById("version_fail").style.display = 'none';
+			document.getElementById("version_abcent").style.display = 'none';
+		} else {
+			if(has_any_version === true){
+				document.getElementById("version_success").style.display = 'none';
+				document.getElementById("version_fail").style.display = '';
 				document.getElementById("version_abcent").style.display = 'none';
 			} else {
-				if(has_any_version === true){
-					document.getElementById("version_success").style.display = 'none';
-					document.getElementById("version_fail").style.display = '';
-					document.getElementById("version_abcent").style.display = 'none';
-				} else {
-					document.getElementById("version_success").style.display = 'none';
-					document.getElementById("version_fail").style.display = 'none';
-					document.getElementById("version_abcent").style.display = '';
-				}
+				document.getElementById("version_success").style.display = 'none';
+				document.getElementById("version_fail").style.display = 'none';
+				document.getElementById("version_abcent").style.display = '';
 			}
-			if(has_any_version === true){
-				document.getElementById("action_button").style.display = '';
-				versionsCont.style.display = '';
-			} else {
-				versionsCont.style.display = 'none';
-			}
-			window.scrollTo(0, document.body.scrollHeight);
-		})
-		.catch(error => {
-			document.getElementById("kernel_select_icon").style.display = 'none';
-			document.getElementById("version_error_container").style.display = '';
-			document.getElementById("version_error").innerHTML = "ERROR:"+error;
-		});
+		}
+		if(has_any_version === true){
+			document.getElementById("action_button").style.display = '';
+			versionsCont.style.display = '';
+		} else {
+			versionsCont.style.display = 'none';
+		}
 	} catch (error){
 		document.getElementById("kernel_select_icon").style.display = 'none';
 		document.getElementById("version_error_container").style.display = '';
@@ -417,19 +505,17 @@ function addEventListeners(){
 	is_oneplus_box.addEventListener('change', (event) => {
 		if (!event.currentTarget.disabled) {
 			if(event.currentTarget.checked){
-				releases_url = "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases";
 				is_oneplus = true;
 			}else{
-				releases_url = "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases";
 				is_oneplus = false;
 			}
-			getKernels();
+			fillKernels();
 		}
 	})
 	const is_any_build_box = document.getElementById("toggle-is-any-build");
 	is_any_build_box.addEventListener('change', (event) => {
 		if (!event.currentTarget.disabled) {
-			getKernels();
+			fillKernels();
 		}
 	})
 	const is_oneplus_container = document.getElementById("is_oneplus_container");
@@ -576,5 +662,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return;
 		}
 	}
-	getKernels();
+	fetchReleases();
+	//getKernels();
 });

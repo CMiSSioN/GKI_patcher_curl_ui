@@ -1,3 +1,7 @@
+## v3.5
+- now OnePlus/Realme repositary/kernel choose logic applies only certain OnePlus/Realme models
+- now there is filter allows only last three different KSU(N) driver versions
+- now for non-pure-gki OnePlus/Realme modeles there is no kernel version check, only model name
 ## v3.4
 - ui improvements
 - added possibility to ignore kernel version build restriction in ui
