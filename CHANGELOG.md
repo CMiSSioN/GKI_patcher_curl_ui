@@ -1,4 +1,4 @@
-## v3.5
+## v3.6
 - VNDK version detection improvements
 - Added ui showing current KSU (kernel driver) version
 ## v3.5
