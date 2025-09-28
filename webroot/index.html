@@ -13,7 +13,11 @@
 <body>
 
     <div class="main-container">
-        <div class="content">
+        <div class="content" style="display:none" id="versions_select_box">
+            <div class="button-box" id="versions">
+            </div>
+        </div>
+        <div class="content" id="content">
             <div class="header">
                 <h3>
                     <span class="localize" id="str_main_version">unlocalized</span>
@@ -22,7 +26,7 @@
             <div class="button-box">
                 <div class="toggle-list toggle-border ripple-element" id="kernel_version">
                     <table><tr><td>
-                    <i class="fas fa-plus toggle-icon" id="kernel_version_icon"></i>
+                    <i class="fas fa-plus toggle-icon" id="kernel_version_i con"></i>
                     <span class="toggle-text"><span class="localize" id="str_kernel_version">unlocalized</span></span>
                     <span class="toggle-text" style="display:inline-block" id="kernel_version_short"></span></td></tr>
                     <tr><td><span class="output-info-content" style="display:none;" id="kernel_version_full"></span></td></tr>
@@ -92,7 +96,7 @@
                 <div class="toggle-list toggle-border ripple-element" id="is_any_build_help" style="display:none">
                     <span class="output-info-content"><span class="localize" id="str_any_build_warning">unlocalized</span></span>
                 </div>
-                <div class="toggle-list toggle-border ripple-element" id="kernel_select_info_container" style="min-height: 0px;">
+                <div class="toggle-list toggle-border ripple-element" id="kernel_select_info_container" style="min-height: 0px; padding: 8px 14px;">
                     <table>
                     <tr id="kernel_select_info" style="display: none"><td><i class="fas fa-solid fa-exclamation-triangle toggle-icon"></i><span class="toggle-text" class="localize" id="str_info"><span>Информация</span></span></td></tr>
                     <tr id="kernel_select_icon"><td><i class="fas fa-solid fa-sync fa-spin toggle-icon"></i><span class="toggle-text"><span class="localize" id="str_request_versions">Запрос версий</span></span></td></tr>
@@ -104,10 +108,12 @@
                     </table></td></tr>
                     </table>
                 </div>
-                <div class="toggle-list toggle-border ripple-element" id="versions_container" style='display:none'>
+                <div class="toggle-list toggle-border ripple-element" id="versions_container" style='display:none; min-height: 0px; padding: 8px 14px;'>
                   <table>
                   <tr><td><span class="toggle-text"><span class="localize" id="str_install_kernel">Установить ядро: </span></span></tr></td>
-                  <tr><td><select id="versions" style="width: 280px"><option value=""><span class="localize" id="str_version_unchoosen">unlocalized</span></option></select></tr></td>
+                  <tr><td style="cursor:pointer;" width="95%" id="selected_kernel_version_container"><i class="fa-solid fa-angle-down"></i>&nbsp;<span><span id="selected_kernel_version"></span></span></tr></td>
+                  <!-- <tr><td style="overflow:hidden;"><ul style="display:none; color: black; background-color: gray;" id="versions"></ul> -->
+                  </tr></td>
                   </table>
                 </div>
                 <div class="toggle-list toggle-border ripple-element" id="action_button" style='display:none'>

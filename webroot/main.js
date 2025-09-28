@@ -17,6 +17,7 @@ let oneplus_model = "";
 let localizationDATA = null;
 let OnePlus_releases = null;
 let GKI_releases = null;
+let selectCurrentScrollPosition = 0;
 
 function appendToOutput(content) {
 	const output = document.querySelector('.output-terminal-content');
@@ -33,6 +34,18 @@ function appendToOutput(content) {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
+function appendToFetchError(content) {
+	const output = document.getElementById('version_error');
+	if (content.trim() === "") {
+			const lineBreak = document.createElement('br');
+			output.appendChild(lineBreak);
+	} else {
+			const line = document.createElement('p');
+			line.className = 'output-content';
+			line.innerHTML = content.replace(/ /g, ' ');
+			output.appendChild(line);
+	}
+}
 
 async function getTranslation(locale) {
 	try {
@@ -172,68 +185,71 @@ async function onePlusDetect(){
 		}
 	}
 	document.getElementById("toggle-is-oneplus").checked = is_oneplus;
-	// const brand_result = await exec("getprop ro.product.product.brand");
-	// if(brand_result.errno == 0){
-	// 	let brand = brand_result.stdout.toUpperCase();
-	// 	//brand = "OPLUS";
-	// 	if( (brand == "ONEPLUS") || (brand == "OPLUS") || (brand == "REALME") ) {
-	// 		document.getElementById("toggle-is-oneplus").checked = true;
-	// 		is_oneplus = true;
-	// 		return;
-	// 	}
-	// }
-	// document.getElementById("toggle-is-oneplus").checked = false;
-	// is_oneplus = false;
+}
+
+function fetchError(error){
+	document.getElementById("kernel_select_info").style.display = '';
+	document.getElementById("kernel_select_info_container").classList.remove("toggle-border");
+	document.getElementById("kernel_select_icon").style.display = 'none';
+	document.getElementById("version_error_container").style.display = '';
+	appendToFetchError(error);
 }
 
 function fetchReleases(){
 	document.getElementById("toggle-is-oneplus").disabled = true;
-	//appendToOutput("fetchReleases");
-	try {
-		//appendToOutput("fetch GKI releases");
-		fetch("https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases").then(response => {
-			// Check if the request was successful (status code 200-299)
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+	try{
+		const url = "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases";
+		fetch(url).then(response => {
+			try{
+				if (!response.ok) {
+					fetchError("GKI_KernelSU_SUSFS HTTP Error:"+response.status);
+					return;
+				}
+				return response.json();
+			}catch(error){
+				fetchError(url+" content is not a JSON:"+error);
 			}
-    // Parse the response body as JSON
-			return response.json();
 		})
 		.then(data => {
 			GKI_releases = data;
-			//appendToOutput("got GKI releases");
 		})
 		.catch(error => {
+			if(error instanceof TypeError){
+				fetchError(url + " is not a valid JSON");
+			} else {
+				fetchError(url + " "+error);
+			}
 		});
 	} catch (error){
+		fetchError(error+" ");
 	}
-	try {
-		fetch("https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases").then(response => {
-			// Check if the request was successful (status code 200-299)
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+	try{
+		const url = "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases";
+		fetch(url).then(response => {
+			try{
+				if (!response.ok) {
+					fetchError("OnePlus_KernelSU_SUSFS HTTP Error:"+response.status);
+					return;
+				}
+				return response.json();
+			}catch(error){
+				fetchError(url+" content is not a JSON:"+error);
 			}
-    // Parse the response body as JSON
-			return response.json();
 		})
 		.then(data => {
 			OnePlus_releases = data;
-			//appendToOutput("got OnePlus releases");
 		})
 		.catch(error => {
+			if(error instanceof TypeError){
+				fetchError(url + " is not a valid JSON");
+			} else {
+				fetchError(url + " "+error);
+			}
 		});
 	} catch (error){
+		fetchError(error+" ");
 	}
 	waitForReleases();
-	// appendToOutput("waiting");
-	// let watchdog = 100;
-	// while( GKI_releases === null ) {
-	// 	let now = new Date();
-	// 	watchdog = watchdog - 1;
-	// 	sleep(1000);
-	// 	appendToOutput("time:"+now.getSeconds()+" watchdog:"+watchdog);
-	// }
-	// appendToOutput("done");
 }
 
 function waitForReleases(){
@@ -283,8 +299,10 @@ function fillKernels(){
 		//document.querySelector('.output-terminal-content').innerHTML = '';
 		//appendToOutput("fillKernels:"+is_oneplus.toString());
 		const versionsSel = document.getElementById("versions");
+		const content = document.getElementById("content");
 		const versionsCont = document.getElementById("versions_container");
 		const isAnyBuild = document.getElementById("toggle-is-any-build");
+		const versions_select_box = document.getElementById('versions_select_box');
 		versionsCont.style.display = "none";
 		document.getElementById("kernel_select_info_container").classList.add("toggle-border");
 		document.getElementById("kernel_select_info").style.display = 'none';
@@ -294,38 +312,37 @@ function fillKernels(){
 		document.getElementById("kernel_select_icon").style.display = '';
 		document.getElementById("action_button").style.display = 'none';
 		isAnyBuild.disabled = true;
-		while (versionsSel.options.length > 1) {
-			versionsSel.remove(1); // Repeatedly remove the first option
-		}
+		versions_select_box.style.display = "none";
+		versionsSel.innerHTML = "";
 		var release_index = 0;
 		let data = structuredClone(GKI_releases);
 		if(is_oneplus){
 			data = structuredClone(OnePlus_releases);
 		}
 		loading_releases = 0;
-		var version_selected = "";
+		var version_selected_val = "";
+		var version_selected_text = "";
 		var has_any_version = false;
 		let last_driver = "";
 		let drivers_counter = 0;
+		const options = [ ["", "&nbsp;" + localizationDATA.str_version_unchoosen] ];
 		data.forEach(function(release){
-			//appendToOutput("release");
+			release.assets.sort(function (a,b) { return a.name > b.name ? -1 : 1; });
 			release.assets.forEach(function(asset) {
 				if(drivers_counter > 3) { return; }
-				//appendToOutput(" "+asset.name);
 				const [good, model, major, minor, build, android, driver] = extractVersion(asset.name);
-				//appendToOutput(" good:"+good.toString()+"");
-				//const ver = regex.exec(asset.name);
 				if(good){
 					if(is_oneplus){
 						if(model != oneplus_model) { return; }
 						if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
 						if(drivers_counter > 3) { return; }
-						const option = new Option(asset.name, asset.browser_download_url);
-						versionsSel.add(option);
+						const option = [asset.browser_download_url, "&nbsp;" + asset.name.replace("AnyKernel3_","")];
+						options.push(option);
 						has_any_version = true;
-						if(version_selected.length < 10){
-							version_selected = asset.browser_download_url;
-							option.selected = true;
+						if(version_selected_val.length < 10){
+							version_selected_val = asset.browser_download_url;
+							version_selected_text = asset.name;
+							//option.selected = true;
 						}
 					} else {
 						if(major != kernel_major){ return; }
@@ -338,14 +355,13 @@ function fillKernels(){
 						}
 						if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
 						if(drivers_counter > 3) { return; }
-						//appendToOutput(" good:"+good.toString()+" major:"+major+" minor:"+minor+" build:"+build+" android:"+android+" driver:"+driver+" counter:"+drivers_counter);
-						const option = new Option(asset.name, asset.browser_download_url);
-						versionsSel.add(option);
+						const option = [asset.browser_download_url, "&nbsp;" + asset.name.replace("-AnyKernel3.zip","")];
+						options.push(option);
 						has_any_version = true;
-						if(version_selected.length < 10){
+						if(version_selected_val.length < 10){
 							if((android == kernel_android) && (major == kernel_major) && (minor == kernel_minor) && (build == kernel_suffix)){
-								version_selected = asset.browser_download_url;
-								option.selected = true;
+								version_selected_val = asset.browser_download_url;
+								version_selected_text = asset.name;
 							}
 						}
 					}
@@ -356,15 +372,13 @@ function fillKernels(){
 			data.forEach(function(release){
 				release.assets.forEach(function(asset) {
 					if(drivers_counter > 3) { return; }
-					//appendToOutput(asset.name+":"+drivers_counter);
 					const [good, model, major, minor, build, android, driver] = extractVersion(asset.name);
-					//appendToOutput(good.toString()+":"+driver);
 					if(good){
 						if(is_oneplus){
 							if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
 							if(drivers_counter > 3) { return; }
-							const option = new Option(asset.name, asset.browser_download_url);
-							versionsSel.add(option);
+							const option = [asset.browser_download_url, "&nbsp;" + asset.name.replace("AnyKernel3_","")];
+							options.push(option);
 							has_any_version = true;
 						} else {
 							if(major != kernel_major){ return; }
@@ -374,8 +388,8 @@ function fillKernels(){
 							}
 							if(driver != last_driver){ last_driver = driver; drivers_counter = drivers_counter + 1; }
 							if(drivers_counter > 3) { return; }
-							const option = new Option(asset.name, asset.browser_download_url);
-							versionsSel.add(option);
+							const option = [asset.browser_download_url, "&nbsp;" + asset.name.replace("-AnyKernel3.zip","")];
+							options.push(option);
 							has_any_version = true;
 						}
 					}
@@ -387,12 +401,48 @@ function fillKernels(){
 		isAnyBuild.disabled = false;
 		document.getElementById("kernel_select_info").style.display = '';
 		document.getElementById("kernel_select_info_container").classList.remove("toggle-border");
-		if(version_selected.length > 0){
-			versionsSel.value = version_selected;
+		const selected_kernel_version = document.getElementById("selected_kernel_version");
+		options.forEach(function(option){
+			const optionli = document.createElement('div');
+			optionli.innerHTML = option[1];
+			optionli.setAttribute("link", option[0]);
+			optionli.classList.add("toggle-list");
+			optionli.classList.add("toggle-border");
+			optionli.classList.add("ripple-element");
+			optionli.classList.add("toggle-list-select");
+			if(option[0] == version_selected_val){
+				optionli.classList.add("toggle-list-selected");
+			} else {
+				optionli.classList.add("toggle-list-unselected");
+			}
+			optionli.addEventListener('click', (event) => {
+				selected_kernel_version.innerHTML = event.currentTarget.innerHTML;
+				selected_kernel_version.setAttribute("link",event.currentTarget.getAttribute("link"));
+
+				const elementsArray = Array.from(document.getElementsByClassName('toggle-list-selected'));
+				elementsArray.forEach(element => {
+					element.classList.remove("toggle-list-selected");
+					element.classList.add("toggle-list-unselected");
+				});
+				event.currentTarget.classList.remove("toggle-list-unselected");
+				event.currentTarget.classList.add("toggle-list-selected");
+				setTimeout(() => {
+					versions_select_box.style.display = "none";
+					content.style.display = "";
+					setTimeout(() => { document.documentElement.scrollTop = selectCurrentScrollPosition; }, 100);
+				}, 1000);
+			});
+			versionsSel.appendChild(optionli);
+		});
+		if(version_selected_val.length > 0){
+			selected_kernel_version.innerHTML = version_selected_text;
+			selected_kernel_version.setAttribute("link", version_selected_val);
 			document.getElementById("version_success").style.display = '';
 			document.getElementById("version_fail").style.display = 'none';
 			document.getElementById("version_abcent").style.display = 'none';
 		} else {
+			selected_kernel_version.innerHTML = localizationDATA.str_version_unchoosen;
+			selected_kernel_version.setAttribute("link", "");
 			if(has_any_version === true){
 				document.getElementById("version_success").style.display = 'none';
 				document.getElementById("version_fail").style.display = '';
@@ -425,20 +475,20 @@ function updateFontSize(newSize) {
 
 function runAction() {
 	if (shellRunning) return;
-	const kernel_url = document.getElementById('versions');
+	const kernel_url = document.getElementById('selected_kernel_version').getAttribute("link");
 	const output = document.querySelector('.output-terminal-content');
 	currentFontSize = 10;
 	updateFontSize(currentFontSize);
-	if(kernel_url.value.length < 10){
+	if(kernel_url.length < 10){
 		output.innerHTML = localizationDATA.str_need_choose_kernel;
 		return;
 	}
 	output.innerHTML = "";
 	shellRunning = true;
-	appendToOutput(kernel_url.value);
+	appendToOutput(kernel_url);
 	appendToOutput(curl_binary);
 	const scriptOutput = spawn("sh", [
-		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url.value
+		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url
 		, document.getElementById('toggle-dry-run').checked ? "1" : "0"
 		, document.getElementById('toggle-active-slot').checked ? "1" : "0"
 		, document.getElementById('toggle-inactive-slot').checked ? "1" : "0"
@@ -509,6 +559,19 @@ function addEventListeners(){
 			curl_version_icon.classList.add("fa-plus");
 			curl_version_short.style.display = "inline-block";
 			curl_version_full.style.display = "none";
+		}
+	});
+	const versions_select_box = document.getElementById('versions_select_box');
+	const content = document.getElementById('content');
+	const selected_kernel_version_container = document.getElementById('selected_kernel_version_container');
+	selected_kernel_version_container.addEventListener('click', () => {
+		if(versions_select_box.style.display == "none"){
+			selectCurrentScrollPosition = document.documentElement.scrollTop;
+			versions_select_box.style.display = "";
+			content.style.display = "none";
+		} else {
+			versions_select_box.style.display = "none";
+			content.style.display = "";
 		}
 	});
 	const clearButton = document.querySelector('.clear-terminal');

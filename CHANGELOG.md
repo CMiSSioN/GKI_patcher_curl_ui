@@ -1,3 +1,7 @@
+## v3.7
+- in WebUI in select-box now kernel versions sorted by build descendly
+- now kernel select-box is drown by its own rather browset constol (smaller font allowed)
+- now if fail to fetch avaible releases ui shows relevant error info rather than infinate update
 ## v3.6
 - VNDK version detection improvements
 - Added ui showing current KSU (kernel driver) version
