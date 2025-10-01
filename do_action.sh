@@ -16,6 +16,7 @@ DRY_RUN=$3
 ACTIVE_SLOT=$4
 INACTIVE_SLOT=$5
 TMPDIR="/data/local/tmp/ksu_flash"
+WORKDIR="$TMPDIR/work"
 ZIP="$TMPDIR/kernel.zip"
 log "$STR_TEMP_DIR_PREPARE $TMPDIR"
 rm -rf "$TMPDIR"
@@ -38,30 +39,32 @@ $CURL -L -o "$ZIP" "$ARCHIVE_URL"
 
 log "$STR_DOWNLOAD_SUCCESS $ZIP"
 log "$STR_UNPACKING"
-unzip -p "$ZIP" tools*/busybox > "$TMPDIR/busybox"
-unzip -p "$ZIP" META-INF/com/google/android/update-binary > "$TMPDIR/update-binary"
-chmod 755 "$TMPDIR/busybox" "$TMPDIR/update-binary"
+mkdir -p "$WORKDIR"
+unzip -p "$ZIP" tools*/busybox > "$WORKDIR/busybox"
+unzip -p "$ZIP" META-INF/com/google/android/update-binary > "$WORKDIR/update-binary"
+chmod 755 "$WORKDIR/busybox" "$WORKDIR/update-binary"
 
 if [ $DRY_RUN -eq 1 ]; then
   log "$STR_DRY_RUN_SUCCESS"
+  rm -rvf "$TMPDIR"
   exit 0
 fi
 
-if [ $ACTIVE_SLOT -eq 1 ]; then
+
 log "$STR_ACTIVE_SLOT_INSTALL"
 log "$STR_MOUNTING"
-TMP="$TMPDIR/tmp"
-"$TMPDIR/busybox" mkdir -p "$TMP"
-"$TMPDIR/busybox" mount -t tmpfs -o noatime tmpfs "$TMP"
+TMP="$WORKDIR/tmp"
+"$WORKDIR/busybox" mkdir -p "$TMP"
+"$WORKDIR/busybox" mount -t tmpfs -o noatime tmpfs "$TMP"
 
 log "$STR_EXECUTING"
 log "$STR_WAIT"
-AKHOME="$TMP/anykernel" SLOT_SELECT=active "$TMPDIR/busybox" ash "$TMPDIR/update-binary" 3 1 "$ZIP" > /dev/null 2>&1
+AKHOME="$TMP/anykernel" SLOT_SELECT=active "$WORKDIR/busybox" ash "$WORKDIR/update-binary" 3 1 "$ZIP" 1>/dev/null 2>/dev/null
 RC=$?
 
 log "$STR_UNMOUNTING"
-"$TMPDIR/busybox" umount "$TMP"
-"$TMPDIR/busybox" rm -rf "$TMPDIR"
+"$WORKDIR/busybox" umount "$TMP"
+rm -rf "$WORKDIR"
 
 if [ $RC -eq 0 ]; then
   log "
@@ -75,23 +78,28 @@ else
   "
 fi
 
-fi
 
-if [ $INACTIVE_SLOT -eq 1 ]; then
+if [ $ACTIVE_SLOT -eq 0 ]; then
 log "$STR_INACTIVE_SLOT_INSTALL"
-log  "$STR_MOUNTING"
-TMP="$TMPDIR/tmp"
-"$TMPDIR/busybox" mkdir -p "$TMP"
-"$TMPDIR/busybox" mount -t tmpfs -o noatime tmpfs "$TMP"
+mkdir -p "$WORKDIR"
+log "$STR_UNPACKING"
+unzip -p "$ZIP" tools*/busybox > "$WORKDIR/busybox"
+unzip -p "$ZIP" META-INF/com/google/android/update-binary > "$WORKDIR/update-binary"
+chmod 755 "$WORKDIR/busybox" "$WORKDIR/update-binary"
+
+log "$STR_MOUNTING"
+TMP="$WORKDIR/tmp"
+"$WORKDIR/busybox" mkdir -p "$TMP"
+"$WORKDIR/busybox" mount -t tmpfs -o noatime tmpfs "$TMP"
 
 log "$STR_EXECUTING"
 log "$STR_WAIT"
-AKHOME="$TMP/anykernel" SLOT_SELECT=inactive "$TMPDIR/busybox" ash "$TMPDIR/update-binary" 3 1 "$ZIP" > /dev/null 2>&1
+AKHOME="$TMP/anykernel" SLOT_SELECT=inactive "$WORKDIR/busybox" ash "$WORKDIR/update-binary" 3 1 "$ZIP" 1>/dev/null 2>/dev/null
 RC=$?
 
 log "$STR_UNMOUNTING"
-"$TMPDIR/busybox" umount "$TMP"
-"$TMPDIR/busybox" rm -rf "$TMPDIR"
+"$WORKDIR/busybox" umount "$TMP"
+rm -rf "$WORKDIR"
 
 if [ $RC -eq 0 ]; then
   log "
@@ -105,4 +113,9 @@ else
      "
 fi
 fi
+
+log "$STR_UNMOUNTING"
+rm -rf "$TMPDIR"
+
+
 exit $RC

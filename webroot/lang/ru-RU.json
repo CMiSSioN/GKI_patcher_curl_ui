@@ -6,7 +6,7 @@
 	"str_curl_version_internal" : "встроенная",
 	"str_curl_version_none" : "отсутствует",
 	"str_dry_run" : "только скачивание",
-	"str_into_active_slot" : "в активный слот",
+	"str_into_active_slot" : "только в активный слот",
 	"str_into_inactive_slot" : "в неактивный слот (OTA)",
 	"str_version_unchoosen" : "не выбрано",
 	"str_version_success" : "Версия ядра определена. При необходимости выберите иную в списке ниже",

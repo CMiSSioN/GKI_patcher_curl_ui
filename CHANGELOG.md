@@ -1,3 +1,6 @@
+## v3.8
+- shell scripts been slightly reworked to proper inactive slot installation
+- now you can't choose to install kernel just inactive slot in UI, only active or both
 ## v3.7
 - in WebUI in select-box now kernel versions sorted by build descendly
 - now kernel select-box is drown by its own rather browset constol (smaller font allowed)

@@ -490,8 +490,8 @@ function runAction() {
 	const scriptOutput = spawn("sh", [
 		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url
 		, document.getElementById('toggle-dry-run').checked ? "1" : "0"
-		, document.getElementById('toggle-active-slot').checked ? "1" : "0"
-		, document.getElementById('toggle-inactive-slot').checked ? "1" : "0"
+		, document.getElementById('toggle-active-slot-only').checked ? "1" : "0"
+		, "0"
 	]);
 	scriptOutput.stdout.on('data', (data) => appendToOutput(data));
 	scriptOutput.stderr.on('data', (data) => appendToOutput(data));
