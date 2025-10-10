@@ -17,6 +17,10 @@
             <div class="button-box" id="versions">
             </div>
         </div>
+        <div class="content" style="display:none" id="repos_select_box">
+            <div class="button-box" id="repos">
+            </div>
+        </div>
         <div class="content" id="content">
             <div class="header">
                 <h3>
@@ -26,7 +30,7 @@
             <div class="button-box">
                 <div class="toggle-list toggle-border ripple-element" id="kernel_version">
                     <table><tr><td>
-                    <i class="fas fa-plus toggle-icon" id="kernel_version_i con"></i>
+                    <i class="fas fa-plus toggle-icon" id="kernel_version_icon"></i>
                     <span class="toggle-text"><span class="localize" id="str_kernel_version">unlocalized</span></span>
                     <span class="toggle-text" style="display:inline-block" id="kernel_version_short"></span></td></tr>
                     <tr><td><span class="output-info-content" style="display:none;" id="kernel_version_full"></span></td></tr>
@@ -67,17 +71,6 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="toggle-list toggle-border ripple-element" id="is_oneplus_container">
-                    <i id="is_oneplus_icon" class="fas fa-info-circle toggle-icon"></i>
-                    <span id="is_oneplus_text" class="toggle-text"><span class="localize" id="str_is_oneplus">unlocalized</span></span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-is-oneplus" enabled>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="toggle-list toggle-border ripple-element" id="is_oneplus_help" style="display:none">
-                    <span class="output-info-content"><span class="localize" id="str_oneplus_warning">unlocalized</span></span>
-                </div>
                 <div class="toggle-list toggle-border ripple-element" id="is_any_build_container">
                     <i id="is_any_build_icon" class="fas fa-info-circle toggle-icon"></i>
                     <span id="is_any_build_text" class="toggle-text"><span class="localize" id="str_is_any_build">unlocalized</span></span>
@@ -88,6 +81,10 @@
                 </div>
                 <div class="toggle-list toggle-border ripple-element" id="is_any_build_help" style="display:none">
                     <span class="output-info-content"><span class="localize" id="str_any_build_warning">unlocalized</span></span>
+                </div>
+                <div class="toggle-list toggle-border ripple-element" id="repo_container" style="display:none">
+                    <i class="fas fa-angle-down toggle-icon"></i>
+                    <span class="toggle-text"><span id="current_repo">undefined</span></span>
                 </div>
                 <div class="toggle-list toggle-border ripple-element" id="kernel_select_info_container" style="min-height: 0px; padding: 8px 14px;">
                     <table>

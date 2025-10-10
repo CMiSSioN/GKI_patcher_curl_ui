@@ -416,6 +416,10 @@ input:checked+.slider:before {
   content: '\f096 ';
 }
 
+.toggle-list-selected {
+  color: green;
+}
+
 .toggle-list-selected::before {
   /* Set the font to Solid */
   font: var(--fa-font-regular);

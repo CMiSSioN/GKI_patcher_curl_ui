@@ -1,0 +1,43 @@
+[
+  {
+    "name":"Wild OnePlus",
+	"url":"https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases",
+	"replace" : [ "AnyKernel3_", "_AnyKernel3.zip", ".zip" ],
+	"regexes": [
+	  {
+	    "regex":"/^AnyKernel3_([a-zA-Z0-9\\-]+)_android([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)_[a-zA-Z]+_([0-9]+)_.*\\.zip$/",
+	    "model_index": 1,
+	    "android_index": 2,
+	    "kmajor_index": 3,
+	    "kminor_index": 4,
+	    "kbuild_index": 5,
+	    "driver_index": 6
+	  },
+	  {
+	    "regex":"/^([a-zA-Z0-9\\-]+)_android([0-9]+)\\.([0-9]+)\\.([0-9]+)_[a-zA-Z]+_([0-9]+)_.*_AnyKernel3.zip$/",
+	    "model_index": 1,
+	    "android_index": 2,
+	    "kmajor_index": 3,
+	    "kminor_index": 4,
+	    "kbuild_index": -1,
+	    "driver_index": -1
+	  }
+	]
+  },
+  {
+    "name":"Wild GKI",
+	"url":"https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases",
+	"replace" : [ "AnyKernel3_", "_AnyKernel3.zip", "-AnyKernel3.zip", ".zip" ],
+	"regexes": [ 
+	  {
+	    "regex":"/^([a-zA-Z0-9\\-]+)-android([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)\\-.*\\-AnyKernel3.zip$/",
+	    "model_index": -1,
+	    "android_index": 2,
+	    "kmajor_index": 3,
+	    "kminor_index": 4,
+	    "kbuild_index": 5,
+	    "driver_index": 1,
+	  }
+	]
+  }
+]

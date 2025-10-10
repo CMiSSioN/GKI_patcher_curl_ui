@@ -1,0 +1,197 @@
+[
+    {
+        "name": "WildKernels(OnePlus-WKSU)",
+        "url": "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases",
+		"add_tag": false,
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            ".zip"
+        ],
+		"models": {
+			"PJA110": "OP-ACE-2-PRO",
+			"PHK110": "OP-ACE-2",
+			"PKG110": "OP-ACE-5",
+			"CPH2661": "OP-NORD-4",
+			"RMX3852": "OP-NORD-4",
+			"RMX3851": "OP-NORD-4",
+			"CPH2663": "OP-NORD-4",
+			"PHN110": "OP-OPEN",
+			"CPH2551": "OP-OPEN",
+			"CPH2499": "OP-OPEN",
+			"OPD2404": "OP-PAD-2",
+			"OPD2403": "OP-PAD-2",
+			"NE2210": "OP10pro",
+			"NE2211": "OP10pro",
+			"NE2213": "OP10pro",
+			"NE2215": "OP10pro",
+			"NE2217": "OP10pro",
+			"RMX3709": "OP10t",
+			"CPH2413": "OP10t",
+			"CPH2415": "OP10t",
+			"CPH2417": "OP10t",
+			"CPH2419": "OP10t",
+			"CPH2487": "OP11r",
+			"PHB110": "OP11",
+			"CPH2447": "OP11",
+			"CPH2449": "OP11",
+			"CPH2451": "OP11",
+			"CPH2585": "OP12r",
+			"CPH2609": "OP12r",
+			"CPH2611": "OP12r",
+			"CPH2573": "OP12",
+			"CPH2581": "OP12",
+			"RMX3800": "OP12",
+			"CPH2583": "OP12",
+			"RMX5011": "OP13",
+			"CPH2655": "OP13",
+			"CPH2653": "OP13",
+			"CPH2649": "OP13",
+			"CPH2645": "OP13r",
+			"CPH2647": "OP13r",
+			"CPH2691": "OP13r",
+			"CPH2723": "OP13S",
+			"CPH2621": "OP-ACE-3V",
+			"PJF110": "OP-ACE-3V"			
+		},
+        "regexes": [
+            {
+                "regex": "^AnyKernel3_([a-zA-Z0-9\\-]+)_android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9]+)_[a-zA-Z]+_([0-9]+)_.*\\.zip$",
+                "model_index": 1,
+                "android_index": 2,
+                "kmajor_index": 3,
+                "kminor_index": 4,
+                "kbuild_index": 5,
+                "driver_index": 6
+            },
+            {
+                "regex": "^([a-zA-Z0-9\\-]+)_android([0-9]+)-([0-9]+)\\.([0-9]+)_[a-zA-Z]+_([0-9]+)_.*_AnyKernel3.zip$",
+                "model_index": 1,
+                "android_index": 2,
+                "kmajor_index": 3,
+                "kminor_index": 4,
+                "kbuild_index": -1,
+                "driver_index": -1
+            }
+        ]
+    },
+    {
+        "name": "KernelSU-Next(GKI-KSUN)",
+        "url": "https://api.github.com/repos/KernelSU-Next/KernelSU-Next/releases",
+		"add_tag": true,
+		"models": {},
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            "-AnyKernel3.zip",
+            "AnyKernel3-",
+            ".zip"
+        ],
+        "regexes": [
+            {
+                "regex": "^AnyKernel3-android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)_.*\\.zip$",
+                "model_index": -1,
+                "android_index": 1,
+                "kmajor_index": 2,
+                "kminor_index": 3,
+                "kbuild_index": 4,
+                "driver_index": -1
+            }
+        ]
+    },
+    {
+        "name": "WildKernels(GKI-WKSU)",
+        "url": "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases",
+		"add_tag": false,
+		"models": {},
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            "-AnyKernel3.zip",
+            ".zip"
+        ],
+        "regexes": [
+            {
+                "regex": "^([a-zA-Z0-9\\-]+)-android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
+                "model_index": -1,
+                "android_index": 2,
+                "kmajor_index": 3,
+                "kminor_index": 4,
+                "kbuild_index": 5,
+                "driver_index": 1
+            }
+        ]
+    },
+    {
+        "name": "ShirkNeko(GKI-SukiSU)",
+        "url": "https://api.github.com/repos/ShirkNeko/GKI_KernelSU_SUSFS/releases",
+		"add_tag": true,
+		"models": {},
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            "-AnyKernel3.zip",
+            "AnyKernel3-",
+            ".zip"
+        ],
+        "regexes": [
+            {
+                "regex": "^android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
+                "model_index": -1,
+                "android_index": 1,
+                "kmajor_index": 2,
+                "kminor_index": 3,
+                "kbuild_index": 4,
+                "driver_index": -1
+            }
+        ]
+    },
+    {
+        "name": "MiRinFork(GKI-SukiSU)",
+        "url": "https://api.github.com/repos/MiRinFork/GKI_SukiSU_SUSFS/releases",
+		"add_tag": true,
+		"models": {},
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            "-AnyKernel3.zip",
+            "AnyKernel3-",
+            ".zip"
+        ],
+        "regexes": [
+            {
+                "regex": "^android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
+                "model_index": -1,
+                "android_index": 1,
+                "kmajor_index": 2,
+                "kminor_index": 3,
+                "kbuild_index": 4,
+                "driver_index": -1
+            }
+        ]
+    },
+    {
+        "name": "zzh20188(GKI-SukiSU)",
+        "url": "https://api.github.com/repos/zzh20188/GKI_KernelSU_SUSFS/releases",
+		"add_tag": true,
+		"models": {},
+        "replace": [
+            "AnyKernel3_",
+            "_AnyKernel3.zip",
+            "-AnyKernel3.zip",
+            "AnyKernel3-",
+            ".zip"
+        ],
+        "regexes": [
+            {
+                "regex": "^android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
+                "model_index": -1,
+                "android_index": 1,
+                "kmajor_index": 2,
+                "kminor_index": 3,
+                "kbuild_index": 4,
+                "driver_index": -1
+            }
+        ]
+    }
+]

@@ -42,3 +42,7 @@ STR_ACTIVE_SLOT_INSTALL="Installing to an active slot"
 STR_INACTIVE_SLOT_INSTALL="Installing to an inactive slot"
 STR_WAIT="Please wait ..."
 STR_DEVICE_MODEL="Device model"
+STR_USER_SWITCH_MESSAGE="VOL+ comply
+VOL- next"
+STR_AVAILABLE_REPOS="Available repositaries"
+STR_CURRENT_REPO="Cur. repo"

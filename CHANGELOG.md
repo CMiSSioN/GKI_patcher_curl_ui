@@ -1,3 +1,6 @@
+## v3.9
+- added posibility to switch between kernel repositaries. Currently there are 6 - WildKernels/OnePlus_KernelSU_SUSFS, KernelSU-Next/KernelSU-Next, WildKernels/GKI_KernelSU_SUSFS, ShirkNeko/GKI_KernelSU_SUSFS, MiRinFork/GKI_SukiSU_SUSFS, zzh20188/GKI_KernelSU_SUSFS
+- now only 6 latest releases requested from repository making kernel select dropdown box update faster
 ## v3.8
 - shell scripts been slightly reworked to proper inactive slot installation
 - now you can't choose to install kernel just inactive slot in UI, only active or both

@@ -42,3 +42,7 @@ STR_INACTIVE_SLOT_INSTALL="Установка в неактивный слот"
 STR_WAIT="Это может занять некоторое время..."
 STR_DEVICE_MODEL="Модель устройства"
 STR_DEVICE_UNKNOWN="Неизвестная модель"
+STR_USER_SWITCH_MESSAGE="VOL+ подтвердить
+VOL- следующий"
+STR_AVAILABLE_REPOS="Доступные репозитории"
+STR_CURRENT_REPO="Тек. репозиторий"
