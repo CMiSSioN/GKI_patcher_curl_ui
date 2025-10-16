@@ -37,7 +37,7 @@
 
 <details>
 <summary>скриншот с положением кнопки</summary>
-![action.png](https://github.com/CMiSSioN/GKI_patcher_curl_ui/blob/master/docs/images/action.png)
+>  ![action.png](https://github.com/CMiSSioN/GKI_patcher_curl_ui/blob/master/docs/images/action.png)
 </details>
 
 ## 📸 Скриншоты
