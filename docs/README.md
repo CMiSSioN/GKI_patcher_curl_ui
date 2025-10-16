@@ -40,14 +40,13 @@
 ### Использование через кнопку action
 <details>
 <summary>скриншот с положением кнопки</summary>
-![action](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png"/>
 </details>
-
-## 📸 Скриншоты
-
->  ![Screenshot_2025-09-20-22-08-59-312_pmdmqs pqgrlv xizasj](https://github.com/user-attachments/assets/c5edb925-4541-436e-bbc4-863d26a54ca5)
-![Screenshot_2025-09-20-22-33-28-781_pmdmqs pqgrlv xizasj](https://github.com/user-attachments/assets/8a9fd6e3-4c03-44a4-8554-9a3c7137659f)
-
+<details>
+<summary>При первом запуске action будет предложен выбор из нескольких репозитариев</summary>
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action_kernel_repo.png"/>
+</details>
+Репозитарии переключаются циклично нажатием кнопки VOL-. Устройство будет определено как OnePlus со специальным ядром, тогда по умолчанию будет выбран репозитарий WildKernels(OnePlus-WKSU). Во всех остальных случаях по умолчанию будет выбран KernelSU-Next(GKI-KSUN)
 
 ---
 
