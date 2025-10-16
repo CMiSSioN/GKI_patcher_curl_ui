@@ -28,20 +28,20 @@
 ## 🚀 Использование
 
 Перед использованием убедитесь, что вы используете самоновейшую версию модуля
+<details>
+<summary>Текущую версию модуля можно узнать так</summary>
+![version](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/version.png)
+</details>
+
 
 Использование возможно в двух режимах
 1. Через кнопку action в менеджере
 2. Через WebUI
 
 ### Использование через кнопку action
-
-![action](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
-
 <details>
 <summary>скриншот с положением кнопки</summary>
-
 ![action](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
-
 </details>
 
 ## 📸 Скриншоты
