@@ -35,9 +35,13 @@
 
 ### Использование через кнопку action
 
+![action](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
+
 <details>
 <summary>скриншот с положением кнопки</summary>
->  ![action.png](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
+
+![action](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png)
+
 </details>
 
 ## 📸 Скриншоты
