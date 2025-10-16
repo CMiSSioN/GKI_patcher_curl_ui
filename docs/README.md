@@ -30,9 +30,8 @@
 Перед использованием убедитесь, что вы используете самоновейшую версию модуля
 <details>
 <summary>Текущую версию модуля можно узнать так</summary>
-![version](https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/version.png)
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/version.png"/>
 </details>
-
 
 Использование возможно в двух режимах
 1. Через кнопку action в менеджере
