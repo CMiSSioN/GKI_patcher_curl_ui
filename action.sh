@@ -70,7 +70,9 @@ else
   source /data/adb/gki_patcher_curl_ui/action_repo.sh
 fi
 
-log "ARCHIVE_URL:'$ARCHIVE_URL'"
+if [ -z "$ARCHIVE_URL" ]; then
+  exit 1
+fi
 
 log "$STR_SEARCHING_KERNEL_SUCCESS: $(basename "$ARCHIVE_URL")"
 
