@@ -53,9 +53,25 @@
 Далее скрипт попытается произвести поиск подходящего ядра в выбранном репозитории. 
 <details>
 <summary>В случае успеха будет выведено название ядра предлагаемого к прошивке.</summary>
-<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action_kernel_repo.png"/>
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action_kernel_app.png"/>
 </details>
-В случае, если подходящее ядро найти не удалось - рекомендуется выбрать ядро вручную используюя WebUI
+В случае, если подходящее ядро найти не удалось - рекомендуется выбрать ядро вручную или переключиться на другой репозитарий используюя WebUI.
+
+## Использование через WebUI
+<details>
+<summary>скриншот с положением кнопки</summary>
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/webui.png"/>
+</details>
+<details>
+<summary>1. Выбирите репозитарий ядер</summary>
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/webui_repo_sel.png"/>
+</details>
+<details>
+<summary>2. Выбирите ядро</summary>
+<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/webui_kernel_sel.png"/>
+</details>
+3. Нажмите кнопку "Старт"
+4. После установки перезагрузитесь
 
 ---
 
