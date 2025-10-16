@@ -1,3 +1,5 @@
+**Русский** | [English](README_EN.md)
+
 # 🧩 KernelSU GKI2 Patcher
 
 **KernelSU GKI2 Auto-Patcher** — это модуль для **KernelSU Next**, который упрощает установку AnyKernel3 на устройства с GKI2-ядрами.  
