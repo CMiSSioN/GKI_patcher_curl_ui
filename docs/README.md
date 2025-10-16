@@ -70,8 +70,8 @@
 <summary>2. Выбирите ядро</summary>
 <IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/webui_kernel_sel.png"/>
 </details>
-3. Нажмите кнопку "Старт"
-4. После установки перезагрузитесь
+3. Нажмите кнопку "Старт"<br/>
+4. После установки перезагрузитесь<br/>
 
 ---
 
