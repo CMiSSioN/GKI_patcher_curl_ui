@@ -1,3 +1,6 @@
+## v3.9.1
+- WildKernels/GKI_KernelSU_SUSFS repository regexp improved
+- Kernel versions list elements now properly wraping instead of clipping (have to due to enormous WildKernels naming <manager name>-<driver version>-<susfs version>-<kmi version>-<security patch version>-<super-duper compatible fixed version>-<watever>-<anykernel etc>.zip )
 ## v3.9
 - added posibility to switch between kernel repositaries. Currently there are 6 - WildKernels/OnePlus_KernelSU_SUSFS, KernelSU-Next/KernelSU-Next, WildKernels/GKI_KernelSU_SUSFS, ShirkNeko/GKI_KernelSU_SUSFS, MiRinFork/GKI_SukiSU_SUSFS, zzh20188/GKI_KernelSU_SUSFS
 - now only 6 latest releases requested from repository making kernel select dropdown box update faster

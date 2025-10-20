@@ -112,7 +112,7 @@
         ],
         "regexes": [
             {
-                "regex": "^([a-zA-Z0-9\\-]+)-android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
+                "regex": "^(.*)-android([0-9]+)-([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-.*-AnyKernel3.zip$",
                 "model_index": -1,
                 "android_index": 2,
                 "kmajor_index": 3,

@@ -459,28 +459,42 @@ function fillKernels(){
 		const selected_kernel_version = document.getElementById("selected_kernel_version");
 		options.forEach(function(option){
 			const optionli = document.createElement('div');
-			optionli.innerHTML = option[1];
+			const optioni = document.createElement("i");
+			const optiont = document.createElement("p");
+			optiont.innerHTML = option[1];			
 			optionli.setAttribute("link", option[0]);
-			optionli.classList.add("toggle-list");
+			optionli.setAttribute("asset_name", option[1]);
+			optionli.classList.add("toggle-list-sb");
 			optionli.classList.add("toggle-border");
 			optionli.classList.add("ripple-element");
 			optionli.classList.add("toggle-list-select");
+			optiont.classList.add("kernel-select-text");
 			if(option[0] == version_selected_val){
+				optioni.classList.add("far");
+				optioni.classList.add("fa-square-check");
 				optionli.classList.add("toggle-list-selected");
 			} else {
+				optioni.classList.add("far");
+				optioni.classList.add("fa-square");
 				optionli.classList.add("toggle-list-unselected");
 			}
+			optionli.appendChild(optioni);
+			optionli.appendChild(optiont);
 			optionli.addEventListener('click', (event) => {
-				selected_kernel_version.innerHTML = event.currentTarget.innerHTML;
+				selected_kernel_version.innerHTML = event.currentTarget.getAttribute("asset_name");
 				selected_kernel_version.setAttribute("link",event.currentTarget.getAttribute("link"));
 
 				const elementsArray = Array.from(versionsSel.getElementsByClassName('toggle-list-selected'));
 				elementsArray.forEach(element => {
 					element.classList.remove("toggle-list-selected");
 					element.classList.add("toggle-list-unselected");
+					element.querySelector("i").classList.remove("fa-square-check");
+					element.querySelector("i").classList.add("fa-square");
 				});
 				event.currentTarget.classList.remove("toggle-list-unselected");
 				event.currentTarget.classList.add("toggle-list-selected");
+				event.currentTarget.querySelector("i").classList.remove("fa-square");
+				event.currentTarget.querySelector("i").classList.add("fa-square-check");
 				setTimeout(() => {
 					versions_select_box.style.display = "none";
 					content.style.display = "";

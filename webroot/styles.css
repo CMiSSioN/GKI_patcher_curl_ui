@@ -142,12 +142,38 @@ body {
     background-color: var(--bg-secondary);
     min-height: 0px; /* Reduzido de 50px */
     padding: 10px 18px; /* Reduzido de 12px 20px */
-    white-space: nowrap;
+	white-space: nowrap;
     text-align: left;
     position: relative;
     overflow: hidden;
 /*    cursor: pointer; */
     transition: background-color 0.3s ease;
+}
+
+.toggle-list-sb {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-secondary);
+    min-height: 0px; /* Reduzido de 50px */
+    padding-left: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+    padding-right: 5px;
+    text-align: left;
+    position: relative;
+    white-space: pre-wrap; /* Preserve whitespace and wrap text */
+    overflow-y: auto;
+    word-break: break-all;
+/*    box-sizing: border-box;*/
+/*    cursor: pointer; */
+    transition: background-color 0.3s ease;
+}
+
+.kernel-select-text {
+    padding-left: 10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+    text-indent: -7px;
 }
 
 .toggle-border {
@@ -293,10 +319,10 @@ input:checked+.slider:before {
     padding: 15px;
     width: 95%;
     height: 95%;
-    overflow-y: auto;
     color: var(--text-output);
     line-height: 1.5;
     white-space: pre-wrap; /* Preserve whitespace and wrap text */
+    overflow-y: auto;
     word-break: break-all;
     box-sizing: border-box;
     background-color: var(--bg-input);
@@ -407,13 +433,14 @@ input:checked+.slider:before {
   font-size: 12px;
   font-family: 'Roboto Mono', monospace;
   cursor: pointer;
+  word-break: break-all;
 }
 
 .toggle-list-unselected::before {
   /* Set the font to Solid */
-  font: var(--fa-font-regular);
+  /* font: var(--fa-font-regular); */
   /* Set the Unicode value for the "fa-ghost" icon */
-  content: '\f096 ';
+  /* content: '\f096 '; */
 }
 
 .toggle-list-selected {
@@ -422,9 +449,9 @@ input:checked+.slider:before {
 
 .toggle-list-selected::before {
   /* Set the font to Solid */
-  font: var(--fa-font-regular);
+  /* font: var(--fa-font-regular); */
   /* Set the Unicode value for the "fa-ghost" icon */
-  content: '\f14a ';
+  /* content: '\f14a '; */
 }
 
 .toggle-list-select:hover {
