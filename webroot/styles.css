@@ -436,22 +436,26 @@ input:checked+.slider:before {
   word-break: break-all;
 }
 
-.toggle-list-unselected::before {
+.toggle-list-unselected-repo::before {
   /* Set the font to Solid */
-  /* font: var(--fa-font-regular); */
+  font: var(--fa-font-regular);
   /* Set the Unicode value for the "fa-ghost" icon */
-  /* content: '\f096 '; */
+  content: '\f096 ';
 }
 
 .toggle-list-selected {
   color: green;
 }
 
-.toggle-list-selected::before {
+.toggle-list-selected-repo {
+  color: green;
+}
+
+.toggle-list-selected-repo::before {
   /* Set the font to Solid */
-  /* font: var(--fa-font-regular); */
+  font: var(--fa-font-regular);
   /* Set the Unicode value for the "fa-ghost" icon */
-  /* content: '\f14a '; */
+  content: '\f14a ';
 }
 
 .toggle-list-select:hover {

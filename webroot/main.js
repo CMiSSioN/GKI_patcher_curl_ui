@@ -554,8 +554,8 @@ function runAction() {
 	}
 	output.innerHTML = "";
 	shellRunning = true;
-	appendToOutput(kernel_url);
-	appendToOutput(curl_binary);
+	//appendToOutput(kernel_url);
+	//appendToOutput(curl_binary);
 	const scriptOutput = spawn("sh", [
 		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url
 		, document.getElementById('toggle-dry-run').checked ? "1" : "0"
@@ -721,7 +721,11 @@ async function repoInit() {
 	} else {
 		repoid = -1;
 	}
-	const repos_result = await exec("cat /data/adb/modules/gki_patcher_curl_ui/repos/repos.json");
+	//const repos_result = await exec("cat /data/adb/modules/gki_patcher_curl_ui/repos/repos.json");
+	const repos_result = await exec("sh /data/adb/modules/gki_patcher_curl_ui/get_repos.sh "+curl_binary);
+	//appendToOutput("errno:"+repos_result.errno);
+	//appendToOutput("stdout:"+repos_result.stdout);
+	//appendToOutput("stderr:"+repos_result.stderr);
 	if (repos_result.errno == 0) {
 		repos_json = JSON.parse(repos_result.stdout);
 		let repo_index = 0;
@@ -739,9 +743,11 @@ async function repoInit() {
 				}
 			}
 			if(trepoid == -1){ trepoid = 1; }
-			const set_repo_result = await exec("sh /data/adb/modules/gki_patcher_curl_ui/ui_set_repo.sh "+trepoid);
+			const set_repo_result = await exec("sh /data/adb/modules/gki_patcher_curl_ui/ui_set_repo.sh "+trepoid+" "+curl_binary);
 			if(set_repo_result.errno == 0){
 				repoid = trepoid;
+			} else {
+				appendToOutput(set_repo_result.stderr);
 			}
 		}
 		repos_json.forEach(function(repo){
@@ -753,9 +759,9 @@ async function repoInit() {
 			optionli.classList.add("ripple-element");
 			optionli.classList.add("toggle-list-select");
 			if(repoid == repo_index){
-				optionli.classList.add("toggle-list-selected");
+				optionli.classList.add("toggle-list-selected-repo");
 			} else {
-				optionli.classList.add("toggle-list-unselected");
+				optionli.classList.add("toggle-list-unselected-repo");
 			}
 			++repo_index;
 			optionli.addEventListener('click', async (event) => {
@@ -766,19 +772,19 @@ async function repoInit() {
 					content.style.display = "";
 					setTimeout(() => { document.documentElement.scrollTop = selectCurrentScrollPosition; }, 100);
 				}, 1000);
-				const set_repo_result = await exec("sh /data/adb/modules/gki_patcher_curl_ui/ui_set_repo.sh "+event_repoid);
+				const set_repo_result = await exec("sh /data/adb/modules/gki_patcher_curl_ui/ui_set_repo.sh "+event_repoid+" "+curl_binary);
 				if(set_repo_result.errno == 0){
 					try{
 						current_repo = repos_json[event_repoid];
 						document.getElementById('current_repo').innerHTML = current_repo.name;		
 
-						const elementsArray = Array.from(repoSel.getElementsByClassName('toggle-list-selected'));
+						const elementsArray = Array.from(repoSel.getElementsByClassName('toggle-list-selected-repo'));
 						elementsArray.forEach(element => {
-							element.classList.remove("toggle-list-selected");
-							element.classList.add("toggle-list-unselected");
+							element.classList.remove("toggle-list-selected-repo");
+							element.classList.add("toggle-list-unselected-repo");
 						});
-						target.classList.remove("toggle-list-unselected");
-						target.classList.add("toggle-list-selected");
+						target.classList.remove("toggle-list-unselected-repo");
+						target.classList.add("toggle-list-selected-repo");
 						versions.innerHTML = "";
 						document.getElementById("kernel_select_info").style.display = "none";
 						document.getElementById("kernel_select_icon").style.display = '';
@@ -790,6 +796,8 @@ async function repoInit() {
 						appendToOutput("ERROR:"+error);
 					}
 					fetchReleases();
+				} else {
+					appendToOutput(set_repo_result.stderr);
 				}
 				//appendToOutput("errno:"+set_repo_result.errno);
 				//appendToOutput("stdout:"+set_repo_result.stdout);
