@@ -1,9 +1,6 @@
+RELEASES_URL="https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases?per_page=2"
 MODEL_RAW=$(getprop ro.product.model)
 log "$STR_DEVICE_MODEL: '$MODEL_RAW'"
-IS_ONEPLUS="1"
-SH_REPOS_COUNT=6
-SH_REPOS_COUNT=6
-
 case "$MODEL_RAW" in
   PJA110) SEARCH_KEYWORD="OP-ACE-2-PRO_" ;;
   PHK110|PHK110YS) SEARCH_KEYWORD="OP-ACE-2_" ;;
@@ -21,34 +18,20 @@ case "$MODEL_RAW" in
   CPH2645|CPH2647|CPH2691) SEARCH_KEYWORD="OP13r_" ;;
   CPH2723) SEARCH_KEYWORD="OP13S_" ;;
   CPH2621|PJF110) SEARCH_KEYWORD="OP-ACE-3V" ;;
-#  "Armor 25T Pro") SEARCH_KEYWORD="OP-ACE-3V" ;;
+  "Armor 25T Pro") SEARCH_KEYWORD="OP-ACE-3V" ;;
   *) IS_ONEPLUS="0" ;;
 esac
 
-if [[ "$IS_ONEPLUS" == "1" ]]; then
-  REPOID=0
-else 
-  REPOID=1
+log "$STR_SEARCHING_KERNEL_PREFIX '$SEARCH_KEYWORD' $STR_SEARCHING_KERNEL_SUFFIX"
+
+log "$STR_KERNEL_VERSIONS_REPO_MESSAGE WildKernels/OnePlus_KernelSU_SUSFS"
+$CURL -s "$RELEASES_URL" > "$TMPDIR/releases.json"
+
+log "$STR_SEARCHING_KERNEL_PREFIX '$SEARCH_KEYWORD' $STR_SEARCHING_KERNEL_SUFFIX"
+ARCHIVE_URL=$(grep -oE '"browser_download_url": *"[^"]*'"$SEARCH_KEYWORD"'[^"]*\.zip"' "$TMPDIR/releases.json" \
+  | head -n 1 \
+  | sed 's/.*"browser_download_url": *"\([^"]*\)".*/\1/')  
+if [ -z "$ARCHIVE_URL" ]; then
+  log "❌ $STR_SEARCHING_KERNEL_FAIL $SEARCH_KEYWORD"
+  #exit 0
 fi
-
-update_repo_uiname() {
-  case $REPOID in
-    0) REPOUI_NAME="WildKernels(OnePlus-WKSU)" ;;
-    1) REPOUI_NAME="KernelSU-Next(GKI-KSUN)" ;;
-    2) REPOUI_NAME="WildKernels(GKI-WKSU)" ;;
-    3) REPOUI_NAME="ShirkNeko(GKI-SukiSU)" ;;
-    4) REPOUI_NAME="MiRinFork(GKI-SukiSU)" ;;
-    5) REPOUI_NAME="zzh20188(GKI-SukiSU)" ;;
-	*) REPOUI_NAME="unknown" ;;
-  esac
-}
-
-update_repo_uiname
-
-log "$STR_AVAILABLE_REPOS:"
-log "1. WildKernels(OnePlus-WKSU)"
-log "2. KernelSU-Next(GKI-KSUN)"
-log "3. WildKernels(GKI-WKSU)"
-log "4. ShirkNeko(GKI-SukiSU)"
-log "5. MiRinFork(GKI-SukiSU)"
-log "6. zzh20188(GKI-SukiSU)"
