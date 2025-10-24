@@ -14,9 +14,9 @@ REPO_COUNTER=0
 mkdir -p $REMOTE_LOGIC/repos
 
 while [ "$REPO_COUNTER" -lt "$SH_REPOS_COUNT" ]; do
-  REPO_COUNTER=$((REPO_COUNTER + 1))
   $CURL -s --show-error --fail -o "$REMOTE_LOGIC/repos/$REPO_COUNTER.sh" "$REMOTE_LOGIC_URL/dynamic/repos/$REPO_COUNTER.sh"
-  [ $? -ne 0 ] && { log "❌ $STR_DOWNLOAD_FAIL"; exit 1; }
+  [ $? -ne 0 ] && { log "$REMOTE_LOGIC_URL/dynamic/repos/$REPO_COUNTER.sh"; log "❌ $STR_DOWNLOAD_FAIL"; break; }
+  REPO_COUNTER=$((REPO_COUNTER + 1))
 done
 
 cat <<EOF

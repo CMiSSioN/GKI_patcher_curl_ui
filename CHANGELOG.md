@@ -1,3 +1,5 @@
+## v4.1
+- fixed miscellaneous error in action script preventing all remote repositaries settings from been downloaded
 ## v4.0
 - WildKernels/GKI_KernelSU_SUSFS repository regexp improved
 - Kernel versions list elements now properly wraping instead of clipping (have to due to enormous WildKernels naming <manager name>-<driver version>-<susfs version>-<kmi version>-<security patch version>-<super-duper compatible fixed version>-<watever>-<anykernel etc>.zip )
