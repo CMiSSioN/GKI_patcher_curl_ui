@@ -112,7 +112,7 @@
     {
         "name": "WildKernels(GKI-WKSU)",
         "url": "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases",
-		"add_tag": false,
+		"add_tag": true,
 		"models": {},
         "replace": [
             "AnyKernel3_",
@@ -129,6 +129,15 @@
                 "kminor_index": 4,
                 "kbuild_index": 5,
                 "driver_index": 1
+            },
+            {
+                "regex": "^([0-9]+)\\.([0-9]+)\\.([0-9a-zA-Z]+)-android([0-9]+)-.*-AnyKernel3.zip$",
+                "model_index": -1,
+                "android_index": 4,
+                "kmajor_index": 1,
+                "kminor_index": 2,
+                "kbuild_index": 3,
+                "driver_index": -1
             }
         ]
     },
