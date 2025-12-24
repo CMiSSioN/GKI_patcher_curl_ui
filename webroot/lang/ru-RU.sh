@@ -11,6 +11,8 @@ STR_USER_INPUT_MESSAGE="VOL+ подтвердить
 VOL- опровергнуть"
 STR_USER_APROVE_MESSAGE="VOL+ продолжить
 VOL- выход"
+STR_KERNEL_APROVE_MESSAGE="VOL+ подтвердить
+VOL- следующее"
 STR_CURRENT_KERNEL_VERSION="Текущая версия ядра"
 STR_TEMP_DIR_PREPARE="Подготовка временной директории"
 STR_SWITCH_TO_INTERNAL_CURL="Системный curl отсутствует. Переключаюсь на встроенный"
@@ -46,3 +48,4 @@ STR_USER_SWITCH_MESSAGE="VOL+ подтвердить
 VOL- следующий"
 STR_AVAILABLE_REPOS="Доступные репозитории"
 STR_CURRENT_REPO="Тек. репозиторий"
+STR_KERNEL_REJECT="Отмена"

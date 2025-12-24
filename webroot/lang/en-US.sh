@@ -9,9 +9,11 @@ STR_IS_ONEPLUS_KERNEL="Your boot will be flashed with OnePlus/Realme kernel
 STR_IS_NOT_ONEPLUS_KERNEL="Your boot will flashed with generic (non OnePlus) kernel
 [!] ATENTION Flashing wrong kernel type can cause bootloop"
 STR_USER_INPUT_MESSAGE="VOL+ comply
-VOL- change type"
+VOL- next"
 STR_USER_APROVE_MESSAGE="VOL+ continue
 VOL- exit"
+STR_KERNEL_APROVE_MESSAGE="VOL+ comply
+VOL- next"
 STR_CURRENT_KERNEL_VERSION="Current kernel version"
 STR_TEMP_DIR_PREPARE="Prepare temporary directory"
 STR_SWITCH_TO_INTERNAL_CURL="System curl is absent. Will use internal"
@@ -46,3 +48,4 @@ STR_USER_SWITCH_MESSAGE="VOL+ comply
 VOL- next"
 STR_AVAILABLE_REPOS="Available repositaries"
 STR_CURRENT_REPO="Cur. repo"
+STR_KERNEL_REJECT="Exit"

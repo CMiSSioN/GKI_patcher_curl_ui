@@ -1,4 +1,4 @@
-RELEASES_URL="https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases?per_page=2"
+RELEASES_URL="https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases?per_page=1&page="
 MODEL_RAW=$(getprop ro.product.model)
 log "$STR_DEVICE_MODEL: '$MODEL_RAW'"
 case "$MODEL_RAW" in
@@ -25,13 +25,29 @@ esac
 log "$STR_SEARCHING_KERNEL_PREFIX '$SEARCH_KEYWORD' $STR_SEARCHING_KERNEL_SUFFIX"
 
 log "$STR_KERNEL_VERSIONS_REPO_MESSAGE WildKernels/OnePlus_KernelSU_SUSFS"
-$CURL -s "$RELEASES_URL" > "$TMPDIR/releases.json"
-
-log "$STR_SEARCHING_KERNEL_PREFIX '$SEARCH_KEYWORD' $STR_SEARCHING_KERNEL_SUFFIX"
-ARCHIVE_URL=$(grep -oE '"browser_download_url": *"[^"]*'"$SEARCH_KEYWORD"'[^"]*\.zip"' "$TMPDIR/releases.json" \
-  | head -n 1 \
-  | sed 's/.*"browser_download_url": *"\([^"]*\)".*/\1/')  
-if [ -z "$ARCHIVE_URL" ]; then
-  log "❌ $STR_SEARCHING_KERNEL_FAIL $SEARCH_KEYWORD"
-  #exit 0
-fi
+page=1
+while true; 
+do
+	log "$RELEASES_URL$page"
+	$CURL -s "$RELEASES_URL$page" > "$TMPDIR/releases.json"
+    
+	log "$STR_SEARCHING_KERNEL_PREFIX '$SEARCH_KEYWORD' $STR_SEARCHING_KERNEL_SUFFIX"
+	ARCHIVE_URL=$(grep -oE '"browser_download_url": *"[^"]*'"$SEARCH_KEYWORD"'[^"]*\.zip"' "$TMPDIR/releases.json" \
+	  | head -n 1 \
+	  | sed 's/.*"browser_download_url": *"\([^"]*\)".*/\1/')  
+	if [ -z "$ARCHIVE_URL" ]; then
+	  #log "❌ $STR_SEARCHING_KERNEL_FAIL $SEARCH_KEYWORD"
+	  #exit 0
+	  page=$((page + 1))
+	  continue;
+	fi
+	log "$STR_SEARCHING_KERNEL_SUCCESS: $(basename "$ARCHIVE_URL")"
+	while true; do
+	  event="$(getevent -lqn -c1)"
+	  if echo "${event}" | grep -q "${volupkey}.*DOWN"; then
+		break
+	  elif echo "${event}" | grep -q "${voldownkey}.*DOWN"; then
+		exit 0
+	  fi
+	done	
+done
