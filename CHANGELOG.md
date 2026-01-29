@@ -1,3 +1,7 @@
+## v4.3
+- action button now opens module github
+## v4.2
+- action button been removed
 ## v4.1
 - fixed miscellaneous error in action script preventing all remote repositaries settings from been downloaded
 ## v4.0
