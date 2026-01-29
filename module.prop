@@ -1,7 +1,7 @@
 id=gki_patcher_curl_ui
 name=KernelSU Next GKI Patcher
-version=4.1
-versionCode=45
+version=4.3
+versionCode=47
 author=AJ1EKCAHgP, Original Author gl_hf, WebUI by KMiSSioN
 description=Automated GKI boot patcher (Slot A/B)
 banner=logo.png
