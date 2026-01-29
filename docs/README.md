@@ -33,30 +33,6 @@
 <IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/version.png"/>
 </details>
 
-Использование возможно в двух режимах
-1. Через кнопку action в менеджере
-2. Через WebUI
-
-## Использование через кнопку action
-<details>
-<summary>скриншот с положением кнопки</summary>
-<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action.png"/>
-</details>
-<details>
-<summary>При первом запуске action будет предложен выбор из нескольких репозитариев</summary>
-<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action_kernel_repo.png"/>
-</details>
-Репозитарии переключаются циклично нажатием кнопки VOL- <br/>
-Если устройство будет определено как OnePlus со специальным ядром, тогда по умолчанию будет выбран репозитарий WildKernels(OnePlus-WKSU) <br/>
-Во всех остальных случаях по умолчанию будет выбран KernelSU-Next(GKI-KSUN) <br/>
-Для того чтобы выбрать репозиторий обратитесь к разделу "Доступные репозитории ядер" <br/>
-Далее скрипт попытается произвести поиск подходящего ядра в выбранном репозитории. 
-<details>
-<summary>В случае успеха будет выведено название ядра предлагаемого к прошивке.</summary>
-<IMG src="https://raw.githubusercontent.com/CMiSSioN/GKI_patcher_curl_ui/refs/heads/master/docs/images/action_kernel_app.png"/>
-</details>
-В случае, если подходящее ядро найти не удалось - рекомендуется выбрать ядро вручную или переключиться на другой репозитарий используюя WebUI.
-
 ## Использование через WebUI
 <details>
 <summary>скриншот с положением кнопки</summary>
