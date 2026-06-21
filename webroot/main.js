@@ -153,7 +153,7 @@ function spawn(command, args = []) {
 		if(model_result.stdout == "NE2213"){ oneplus_model = "OP10pro"; }else
 		if(model_result.stdout == "NE2215"){ oneplus_model = "OP10pro"; }else
 		if(model_result.stdout == "NE2217"){ oneplus_model = "OP10pro"; }else
-		if(model_result.stdout == "RMX3709"){ oneplus_model = "OP10t"; }else
+		if(model_result.stdout == "RMX3709"){ oneplus_model = "OP11r"; }else
 		if(model_result.stdout == "CPH2413"){ oneplus_model = "OP10t"; }else
 		if(model_result.stdout == "CPH2415"){ oneplus_model = "OP10t"; }else
 		if(model_result.stdout == "CPH2417"){ oneplus_model = "OP10t"; }else
