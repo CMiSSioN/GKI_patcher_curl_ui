@@ -34,7 +34,8 @@
 			"SM-X610": "SM-X610",
 			"SM-X710": "SM-X710",
 			"SM-X800": "SM-X800",
-			"SM-X916B": "SM-X916B"
+			"SM-X916B": "SM-X916B",
+            "Armor 25T Pro": "SM-X916B"
 		},
         "regexes": [
             {
