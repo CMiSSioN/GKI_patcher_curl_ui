@@ -48,7 +48,7 @@
                 "driver_index": 1
             },
             {
-                "regex": "^([a-zA-Z0-9\\-]+)-([0-9]+)\\.([0-9]+)-android([0-9]+)-AnyKernel3\\.zip$",
+                "regex": "^(SM-[a-zA-Z0-9\\-]+)-([0-9]+)\\.([0-9]+)-android([0-9]+)-AnyKernel3\\.zip$",
                 "model_index": 1,
                 "android_index": 4,
                 "kmajor_index": 2,
