@@ -1,3 +1,10 @@
+## v4.5
+- Added Samsung KSU+SUSFS WildKernels repositary
+- Added posibility to flash inactive slot only
+- Added option to flash bypass kernel image (if zip-archive contains both normal and bypass images)
+- Changed behavior of "download only" mode (now it will actually run update-binary but actual flashing will not happen)
+- Now update-binary script output actially seen on screen instead of skiping to /dev/null
+- Added zip cmd utility
 ## v4.4
 - Fix for RMX3709
 ## v4.3

@@ -22,9 +22,10 @@ let current_releases = null;
 
 function appendToOutput(content) {
 	const output = document.querySelector('.output-terminal-content');
+	content = content.replace("ui_print","");
 	if (content.trim() === "") {
-			const lineBreak = document.createElement('br');
-			output.appendChild(lineBreak);
+			//const lineBreak = document.createElement('br');
+			//output.appendChild(lineBreak);
 	} else {
 			const line = document.createElement('p');
 			line.className = 'output-content';
@@ -264,6 +265,7 @@ function assetsCompare(a,b){
 function fetchReleases(){
 	try{
 		const url = current_repo.url+"?per_page=6";
+		//console.log(url);
 		current_releases = null;
 		document.querySelector('.output-terminal-content').innerHTML = "";
 		//appendToOutput(model_raw);
@@ -288,11 +290,13 @@ function fetchReleases(){
 		})
 		.then(data => {
 			//appendToOutput("data");
+			//console.log(data);
 			current_releases = structuredClone(data);
 			current_releases.forEach(function(release){
 				release.assets.forEach(function(asset) {
 					const [good, model, major, minor, build, android, driver] = extractVersion(asset.name);
 					//appendToOutput(asset.name+" "+good);
+					//console.log(asset.name+" "+good+" model:"+model);
 					asset.version_good = good;
 					asset.device_model = model;
 					asset.kernel_major = major;
@@ -559,8 +563,9 @@ function runAction() {
 	const scriptOutput = spawn("sh", [
 		"/data/adb/modules/gki_patcher_curl_ui/do_action.sh", curl_binary, kernel_url
 		, document.getElementById('toggle-dry-run').checked ? "1" : "0"
-		, document.getElementById('toggle-active-slot-only').checked ? "1" : "0"
-		, "0"
+		, document.getElementById('toggle-active-slot').checked ? "1" : "0"
+		, document.getElementById('toggle-inactive-slot').checked ? "1" : "0"
+		, document.getElementById('toggle-bypass-version').checked ? "1" : "0"
 	]);
 	scriptOutput.stdout.on('data', (data) => appendToOutput(data));
 	scriptOutput.stderr.on('data', (data) => appendToOutput(data));

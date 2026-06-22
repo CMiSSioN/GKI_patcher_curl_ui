@@ -1,6 +1,6 @@
 [
     {
-        "name": "WildKernels(Samsung-WKSU)",
+        "name": "Wild(Samsung-WKSU)",
         "url": "https://api.github.com/repos/WildKernels/Samsung_KernelSU_SUSFS/releases",
         "add_tag": false,
         "replace": [
@@ -59,7 +59,7 @@
         ]
     },
     {
-        "name": "WildKernels(OnePlus-WKSU)",
+        "name": "Wild(OnePlus-WKSU)",
         "url": "https://api.github.com/repos/WildKernels/OnePlus_KernelSU_SUSFS/releases",
         "add_tag": false,
         "replace": [
@@ -147,7 +147,7 @@
         ]
     },
     {
-        "name": "KernelSU-Next(GKI-KSUN)",
+        "name": "KSUNext(GKI-KSUN)",
         "url": "https://api.github.com/repos/KernelSU-Next/KernelSU-Next/releases",
         "add_tag": true,
         "models": {
@@ -172,7 +172,7 @@
         ]
     },
     {
-        "name": "WildKernels(GKI-WKSU)",
+        "name": "Wild(GKI-WKSU)",
         "url": "https://api.github.com/repos/WildKernels/GKI_KernelSU_SUSFS/releases",
         "add_tag": true,
         "models": {
